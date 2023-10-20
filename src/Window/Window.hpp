@@ -14,11 +14,13 @@ private:
 public:
     Window(const char *windowName, int w, int h);
 
-    int startWindow();
+    int initializeWindow();
 
     void startRender();
 
     void closeWindow();
+
+    void terminateWindow();
 
     void processCloseInput();
 

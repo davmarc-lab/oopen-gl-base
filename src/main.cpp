@@ -1,72 +1,11 @@
 #include "Lib.hpp"
 #include "Window/Window.hpp"
 #include "Shape/Shape.hpp"
+#include "Shader/Shader.hpp"
 
 #include <iostream>
 
 #define PI 3.14159265358979323846
-
-// Create Shader class which use and retrieves this variable and add createShader() method
-GLuint fragmentShader;
-GLuint shaderProgram;
-
-const char *vertexShaderSource = "#version 330 core\n"
-                                 "layout (location = 0) in vec3 aPos;\n"
-                                 "void main()\n"
-                                 "{\n"
-                                 "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-                                 "}\0";
-const char *fragmentShaderSource = "#version 330 core\n"
-                                   "out vec4 FragColor;\n"
-                                   "void main()\n"
-                                   "{\n"
-                                   "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-                                   "}\n\0";
-
-// [TODO] => Add to Shader class
-void createShader()
-{
-    unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-    glCompileShader(vertexShader);
-    // check for shader compile errors
-    int success;
-    char infoLog[512];
-    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-    if (!success)
-    {
-        glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-        cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n"
-             << infoLog << endl;
-    }
-    // fragment shader
-    fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-    glCompileShader(fragmentShader);
-    // check for shader compile errors
-    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-    if (!success)
-    {
-        glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-        cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n"
-             << infoLog << endl;
-    }
-    // link shaders
-    shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glLinkProgram(shaderProgram);
-    // check for linking errors
-    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-    if (!success)
-    {
-        glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-        cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n"
-             << infoLog << endl;
-    }
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
-}
 
 void buildCircle(float cx, float cy, float rx, float ry, Shape2D *shape)
 {
@@ -92,30 +31,38 @@ void buildCircle(float cx, float cy, float rx, float ry, Shape2D *shape)
 int main()
 {
     Window w = Window("Hello triangle", 800, 800);
-    Shape2D shape = Shape2D(50);
-    w.startWindow();
 
-    createShader();
-
-    buildCircle(0, 0, 1.0, 1.0, &shape);
-    shape.createVertexArray();
-
-    while (!glfwWindowShouldClose(w.getWindow()))
+    if (w.initializeWindow() == 0)
     {
-        // input
-        w.processCloseInput();
+        Shader shader("resources/vertexShader.vs", "resources/fragmentShader.fs");
 
-        // render
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        Shape2D shape = Shape2D(50);
+        buildCircle(0, 0, 1.0, 1.0, &shape);
+        shape.createVertexArray();
 
-        glUseProgram(shaderProgram);
-        glBindVertexArray(shape.getVertexArrayObject()); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
-        glDrawArrays(GL_TRIANGLE_FAN, 0, shape.getVertexNum());
+        while (!glfwWindowShouldClose(w.getWindow()))
+        {
+            // input
+            w.processCloseInput();
 
-        // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
-        glfwSwapBuffers(w.getWindow());
-        glfwPollEvents();
+            // render
+            glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+            glClear(GL_COLOR_BUFFER_BIT);
+
+            shader.use();
+            glBindVertexArray(shape.getVertexArrayObject()); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
+            glDrawArrays(GL_TRIANGLE_FAN, 0, shape.getVertexNum());
+
+            // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
+            glfwSwapBuffers(w.getWindow());
+            glfwPollEvents();
+        }
+        w.terminateWindow();
+    }
+    else
+    {
+        cout << "Cannot start the application, due to GLFW error" << endl;
+        return -1;
     }
 
     return 0;
