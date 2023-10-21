@@ -2,21 +2,6 @@
 
 using namespace std;
 
-Shape2D::Shape2D(int ntriangle, vector<vec3> vertex, vector<vec4> colors, mat4 model)
-{
-    this->ntriangle = ntriangle;
-    this->vertex = vertex;
-    this->colors = colors;
-    this->model = model;
-    this->nvertex = this->vertex.size();
-}
-
-// Empty constructor
-Shape2D::Shape2D(int ntriangle)
-{
-    this->ntriangle = ntriangle;
-}
-
 void Shape2D::createVertexArray()
 {
     glGenVertexArrays(1, &this->vao);

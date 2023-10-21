@@ -2,6 +2,7 @@
 #include "Window/Window.hpp"
 #include "Shape/Shape.hpp"
 #include "Shader/Shader.hpp"
+#include "Scene/Scene.hpp"
 
 #include <iostream>
 
@@ -44,6 +45,11 @@ int main()
         buildCircle(0.5, -0.5, 0.3, 0.3, &shape2);
         shape2.createVertexArray();
 
+        Scene scene = Scene();
+
+        scene.addShape2dToScene(shape, GL_TRIANGLE_STRIP);
+        scene.addShape2dToScene(shape2, GL_TRIANGLE_FAN);
+
         // scale, not working: problems with shaders extern files
         // shape.setModelMatrix(mat4(1.0));
         // shape.setModelMatrix(scale(shape.getModelMatrix(), vec3(300, 300, 100)));
@@ -58,14 +64,10 @@ int main()
             glClear(GL_COLOR_BUFFER_BIT);
 
             shader.use();
+            scene.drawScene();
             // mat4 transform = shape.getModelMatrix();
             // GLuint transformLoc = glGetUniformLocation(shader.getId(), "transform");
             // glUniformMatrix4fv(transformLoc, 1, GL_FALSE, value_ptr(transform));
-            glBindVertexArray(shape.getVertexArrayObject()); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
-            glDrawArrays(GL_TRIANGLE_FAN, 0, shape.getVertexNum());
-
-            glBindVertexArray(shape2.getVertexArrayObject());
-            glDrawArrays(GL_TRIANGLE_FAN, 0, shape2.getVertexNum());
 
             // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
             glfwSwapBuffers(w.getWindow());

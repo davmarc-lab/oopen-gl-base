@@ -16,9 +16,20 @@ private:
     mat4 model;
 
 public:
-    Shape2D(int ntriangle, vector<vec3> vertex, vector<vec4> colors, mat4 model);
+    Shape2D(int ntriangle, vector<vec3> vertex, vector<vec4> colors, mat4 model)
+    {
+        this->ntriangle = ntriangle;
+        this->vertex = vertex;
+        this->colors = colors;
+        this->model = model;
+        this->nvertex = this->vertex.size();
+    }
 
-    Shape2D(int ntriangle);
+    // Empty constructor
+    Shape2D(int ntriangle)
+    {
+        this->ntriangle = ntriangle;
+    }
 
     // Creates the VAO of the Shape2D
     void createVertexArray();
