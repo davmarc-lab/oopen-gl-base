@@ -47,12 +47,19 @@ int main()
 
         Scene scene = Scene();
 
-        scene.addShape2dToScene(shape, GL_TRIANGLE_STRIP);
+        scene.addShape2dToScene(shape, GL_TRIANGLE_FAN);
         scene.addShape2dToScene(shape2, GL_TRIANGLE_FAN);
 
         // scale, not working: problems with shaders extern files
-        // shape.setModelMatrix(mat4(1.0));
-        // shape.setModelMatrix(scale(shape.getModelMatrix(), vec3(300, 300, 100)));
+        shader.use();
+
+        mat4 transform = mat4(1.0f);
+        shape.setModelMatrix(transform);
+        shape.setModelMatrix(scale(shape.getModelMatrix(), vec3(0.5, 0.5, 0.5)));
+        transform = shape.getModelMatrix();
+
+        GLuint trandformLoc = glGetUniformLocation(shader.getId(), "transform");
+        glUniformMatrix4fv(trandformLoc, 1, GL_FALSE, value_ptr(shape.getModelMatrix()));
 
         while (!glfwWindowShouldClose(w.getWindow()))
         {
@@ -63,11 +70,7 @@ int main()
             glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
 
-            shader.use();
             scene.drawScene();
-            // mat4 transform = shape.getModelMatrix();
-            // GLuint transformLoc = glGetUniformLocation(shader.getId(), "transform");
-            // glUniformMatrix4fv(transformLoc, 1, GL_FALSE, value_ptr(transform));
 
             // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
             glfwSwapBuffers(w.getWindow());
