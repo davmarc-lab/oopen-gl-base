@@ -11,10 +11,10 @@ shader = ./Shader/Shader.cpp
 shaderh = ./Shader/Shader.hpp
 libh = Lib.hpp
 
-all: main
+all: main.exe
 
-main: main.o window.o shape.o shader.o
-	g++ ${FLAGS} -o main main.o window.o shape.o shader.o ${glad} ${LIBS}
+main.exe: main.o window.o shape.o shader.o
+	g++ ${FLAGS} -o main.exe main.o window.o shape.o shader.o ${glad} ${LIBS}
 
 main.o: main.cpp ${gladh} ${libh}
 	gcc -c ${FLAGS} main.cpp -o main.o

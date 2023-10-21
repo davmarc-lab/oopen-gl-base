@@ -25,7 +25,7 @@ void buildCircle(float cx, float cy, float rx, float ry, Shape2D *shape)
         // Colore
         shape->addElementColors(vec4(1.0, 0.0, 0.0, 1.0));
     }
-    shape->setNumVertex(shape->getVertexArray().size());
+    shape->setVertexNum(shape->getVertexArray().size());
 }
 
 int main()
@@ -37,8 +37,16 @@ int main()
         Shader shader("resources/vertexShader.vs", "resources/fragmentShader.fs");
 
         Shape2D shape = Shape2D(50);
-        buildCircle(0, 0, 1.0, 1.0, &shape);
+        buildCircle(-0.5, -0.5, 0.3, 0.3, &shape);
         shape.createVertexArray();
+
+        Shape2D shape2 = Shape2D(10);
+        buildCircle(0.5, -0.5, 0.3, 0.3, &shape2);
+        shape2.createVertexArray();
+
+        // scale, not working: problems with shaders extern files
+        // shape.setModelMatrix(mat4(1.0));
+        // shape.setModelMatrix(scale(shape.getModelMatrix(), vec3(300, 300, 100)));
 
         while (!glfwWindowShouldClose(w.getWindow()))
         {
@@ -50,8 +58,14 @@ int main()
             glClear(GL_COLOR_BUFFER_BIT);
 
             shader.use();
+            // mat4 transform = shape.getModelMatrix();
+            // GLuint transformLoc = glGetUniformLocation(shader.getId(), "transform");
+            // glUniformMatrix4fv(transformLoc, 1, GL_FALSE, value_ptr(transform));
             glBindVertexArray(shape.getVertexArrayObject()); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
             glDrawArrays(GL_TRIANGLE_FAN, 0, shape.getVertexNum());
+
+            glBindVertexArray(shape2.getVertexArrayObject());
+            glDrawArrays(GL_TRIANGLE_FAN, 0, shape2.getVertexNum());
 
             // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
             glfwSwapBuffers(w.getWindow());

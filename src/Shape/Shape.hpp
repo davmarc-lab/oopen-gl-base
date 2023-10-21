@@ -27,26 +27,30 @@ public:
     void drawShape2D(int n);
 
     // Add element to vertex vector3
-    void addElementVertex(vec3 elem) { this->vertex.push_back(elem); };
+    void addElementVertex(vec3 elem) { this->vertex.push_back(elem); }
 
     // Add element to colors vetcor4
-    void addElementColors(vec4 elem) { this->colors.push_back(elem); };
+    void addElementColors(vec4 elem) { this->colors.push_back(elem); }
 
     // Retrieves the vertex number of the shape
-    int getVertexNum() { return this->nvertex; };
+    int getVertexNum() { return this->nvertex; }
+
+    void setVertexNum(int n) { this->nvertex = n; }
 
     // Retrieves the triangles nummber of the shape
-    int getTriangleNum() { return this->ntriangle; };
+    int getTriangleNum() { return this->ntriangle; }
 
-    void setVertexArray(vector<vec3> vertex) { this->vertex = vertex; };
+    void setTriangleNum(int n) { this->ntriangle = n; }
 
-    void setColorsArray(vector<vec4> colors) { this->colors = colors; };
+    vector<vec3> getVertexArray() { return this->vertex; }
 
-    void setNumVertex(int n) { this->nvertex = n; };
+    void setVertexArray(vector<vec3> vertex) { this->vertex = vertex; }
 
-    void setNumTriangle(int n) { this->ntriangle = n; };
+    void setColorsArray(vector<vec4> colors) { this->colors = colors; }
 
-    vector<vec3> getVertexArray() { return this->vertex; };
+    mat4 getModelMatrix() { return this->model; }
 
-    GLuint getVertexArrayObject() { return this->vao; };
+    void setModelMatrix(mat4 model) { this->model = mat4(model); }
+
+    GLuint getVertexArrayObject() { return this->vao; }
 };
