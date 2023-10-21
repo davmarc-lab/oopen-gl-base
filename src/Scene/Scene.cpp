@@ -24,5 +24,6 @@ void Scene::drawScene()
         GLenum renderMode = this->getSceneElements()[i].second;
         glBindVertexArray(shape.getVertexArrayObject());
         glDrawArrays(renderMode, 0, shape.getVertexNum());
+        glBindVertexArray(shape.getVertexArrayObject());
     }
 }

@@ -21,7 +21,6 @@ private:
             glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
             if (!success)
             {
-                glGetShaderInfoLog(shader, 1024, NULL, infoLog);
                 cout << "ERROR::SHADER_COMPILATION_ERROR of type: " << type << endl
                      << infoLog << "-- -------------------------------------------------- --" << endl;
             }

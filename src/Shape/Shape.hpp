@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <iostream>
 #include "../Lib.hpp"
 
 class Shape2D
@@ -41,7 +42,14 @@ public:
     void addElementVertex(vec3 elem) { this->vertex.push_back(elem); }
 
     // Add element to colors vetcor4
-    void addElementColors(vec4 elem) { this->colors.push_back(elem); }
+    void addElementColors(vec4 elem)
+    {
+        this->colors.push_back(elem);
+        // for (int i = 0; i < this->colors.size(); i++)
+        // {
+        //     cout << this->colors[i].r << ", " << this->colors[i].g << ", " << this->colors[i].b << endl;
+        // }
+    }
 
     // Retrieves the vertex number of the shape
     int getVertexNum() { return this->nvertex; }
@@ -64,4 +72,6 @@ public:
     void setModelMatrix(mat4 model) { this->model = mat4(model); }
 
     GLuint getVertexArrayObject() { return this->vao; }
+
+    vector<vec4> getColorsArray() { return this->colors; }
 };

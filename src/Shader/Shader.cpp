@@ -39,6 +39,10 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath)
     const char *vShaderCode = vertexCode.c_str();
     const char *fShaderCode = fragmentCode.c_str();
 
+    // cout << vShaderCode << endl;
+
+    // cout << fShaderCode << endl;
+
     // compiles the provided shaders
     GLuint vertex, fragment;
 
@@ -46,7 +50,7 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath)
     vertex = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertex, 1, &vShaderCode, NULL);
     glCompileShader(vertex);
-    checkCompileErrors(fragment, "FRAGMENT");
+    checkCompileErrors(vertex, "VERTEX");
 
     // fragment shader
     fragment = glCreateShader(GL_FRAGMENT_SHADER);
@@ -57,6 +61,7 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath)
     // initialize shader program
     this->setId(glCreateProgram());
     glAttachShader(this->getId(), vertex);
+    glAttachShader(this->getId(), fragment);
     glLinkProgram(this->getId());
     checkCompileErrors(this->getId(), "PROGRAM");
 
