@@ -18,5 +18,5 @@ public:
 
     GLenum getRenderMode(Shape2D shape);
 
-    void drawScene();
+    void drawScene(GLuint id);
 };

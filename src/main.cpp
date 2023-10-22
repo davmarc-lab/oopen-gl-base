@@ -8,6 +8,8 @@
 
 #define PI 3.14159265358979323846
 
+const int WIDTH = 800, HEIGHT = 800;
+
 void buildCircle(float cx, float cy, float rx, float ry, Shape2D *shape)
 {
     int i;
@@ -52,14 +54,14 @@ void buildCircleRed(float cx, float cy, float rx, float ry, Shape2D *shape)
 
 int main()
 {
-    Window w = Window("Hello triangle", 800, 800);
+    Window w = Window("Hello triangle", WIDTH, HEIGHT);
 
     if (w.initializeWindow() == 0)
     {
         Shader shader("resources/vertexShader.vs", "resources/fragmentShader.fs");
 
         Shape2D shape = Shape2D(50);
-        buildCircle(-0.5, -0.5, 0.3, 0.3, &shape);
+        buildCircle(0.0, 0.0, 0.3, 0.3, &shape);
         shape.createVertexArray();
 
         Shape2D shape2 = Shape2D(10);
@@ -73,6 +75,18 @@ int main()
 
         shader.use();
 
+        /***put theese things in a class/function and ezjob***/
+        mat4 view = mat4(1.0f);
+        mat4 projection = mat4(1.0f);
+        view = translate(view, vec3(0.0f, 0.0f, 0.0f));
+        // projection = perspective(radians(45.0f), (float)WIDTH / HEIGHT, 0.1f, 100.0f);
+        projection = ortho(0.0f, (float)WIDTH, 0.0f, (float)HEIGHT);
+        GLuint viewLoc = glGetUniformLocation(shader.getId(), "view");
+        GLuint projLoc = glGetUniformLocation(shader.getId(), "projection");
+        glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view[0][0]);
+        glUniformMatrix4fv(projLoc, 1, GL_FALSE, value_ptr(projection));
+        /***---END---***/
+
         while (!glfwWindowShouldClose(w.getWindow()))
         {
             // input
@@ -80,24 +94,11 @@ int main()
 
             // render
             glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-            glClear(GL_COLOR_BUFFER_BIT);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-            scene.drawScene();
+            scene.drawScene(shader.getId());
 
-            for (int i = 0; i < scene.getSceneElements().size(); i++)
-            {
-                mat4 transform = mat4(1.0f);
-                GLuint trandformLoc;
-                Shape2D elem = scene.getSceneElements()[i].first;
-                elem.setModelMatrix(transform);
-                elem.setModelMatrix(scale(elem.getModelMatrix(), vec3(0.5, 0.5, 0.5)));
-                transform = elem.getModelMatrix();
-
-                trandformLoc = glGetUniformLocation(shader.getId(), "transform");
-                glUniformMatrix4fv(trandformLoc, 1, GL_FALSE, value_ptr(elem.getModelMatrix()));
-            }
-
-            // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
+            // swap buffers and poll IO events
             glfwSwapBuffers(w.getWindow());
             glfwPollEvents();
         }
