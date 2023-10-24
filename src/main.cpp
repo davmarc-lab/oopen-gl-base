@@ -52,6 +52,19 @@ void buildCircleRed(float cx, float cy, float rx, float ry, Shape2D *shape)
     shape->setVertexNum(shape->getVertexArray().size());
 }
 
+void initWindowView(Shader shader)
+{
+    mat4 view = mat4(1.0f);
+    mat4 projection = mat4(1.0f);
+    view = translate(view, vec3(0.0f, 0.0f, 0.0f));
+    // projection = perspective(radians(45.0f), (float)WIDTH / HEIGHT, 0.1f, 100.0f);
+    projection = ortho(0.0f, (float)WIDTH, 0.0f, (float)HEIGHT);
+    GLuint viewLoc = glGetUniformLocation(shader.getId(), "view");
+    GLuint projLoc = glGetUniformLocation(shader.getId(), "projection");
+    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view[0][0]);
+    glUniformMatrix4fv(projLoc, 1, GL_FALSE, value_ptr(projection));
+}
+
 int main()
 {
     Window w = Window("Hello triangle", WIDTH, HEIGHT);
@@ -74,18 +87,7 @@ int main()
         scene.addShape2dToScene(shape2, GL_TRIANGLE_FAN);
 
         shader.use();
-
-        /***put theese things in a class/function and ezjob***/
-        mat4 view = mat4(1.0f);
-        mat4 projection = mat4(1.0f);
-        view = translate(view, vec3(0.0f, 0.0f, 0.0f));
-        // projection = perspective(radians(45.0f), (float)WIDTH / HEIGHT, 0.1f, 100.0f);
-        projection = ortho(0.0f, (float)WIDTH, 0.0f, (float)HEIGHT);
-        GLuint viewLoc = glGetUniformLocation(shader.getId(), "view");
-        GLuint projLoc = glGetUniformLocation(shader.getId(), "projection");
-        glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view[0][0]);
-        glUniformMatrix4fv(projLoc, 1, GL_FALSE, value_ptr(projection));
-        /***---END---***/
+        initWindowView(shader);
 
         while (!glfwWindowShouldClose(w.getWindow()))
         {
