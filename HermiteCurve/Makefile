@@ -7,6 +7,8 @@ win = ./Window/Window.cpp
 winh = ./Window/Window.hpp
 shape = ./Shape/Shape.cpp
 shapeh = ./Shape/Shape.hpp
+cshape = ./Shape/ComplexShape2D.cpp
+cshapeh = ./Shape/ComplexShape2D.hpp
 scene = ./Scene/Scene.cpp
 sceneh = ./Scene/Scene.hpp
 shader = ./Shader/Shader.cpp
@@ -15,8 +17,8 @@ libh = Lib.hpp
 
 all: main.exe
 
-main.exe: main.o window.o shape.o shader.o scene.o
-	g++ ${FLAGS} -o main.exe main.o window.o shape.o shader.o scene.o ${glad} ${LIBS}
+main.exe: main.o window.o shape.o shader.o scene.o cshape.o
+	g++ ${FLAGS} -o main.exe main.o window.o shape.o cshape.o shader.o scene.o ${glad} ${LIBS}
 
 main.o: main.cpp ${gladh} ${libh}
 	gcc -c ${FLAGS} main.cpp -o main.o
@@ -26,6 +28,9 @@ window.o: ${win} ${winh} ${libh} ${gladh}
 
 shape.o: ${shape} ${shapeh} ${libh} ${gladh}
 	gcc -c ${FLAGS} ${shape} -o shape.o
+
+cshape.o: ${cshape} ${cshapeh} ${shapeh} ${libh} ${gladh}
+	gcc -c ${FLAGS} ${cshape} -o cshape.o
 
 shader.o: ${shader} ${shaderh} ${shapeh} ${gladh}
 	gcc -c ${FLAGS} ${shader} -o shader.o

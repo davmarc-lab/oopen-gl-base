@@ -24,6 +24,22 @@ void initWindowView(Shader shader)
     glUniformMatrix4fv(projLoc, 1, GL_FALSE, value_ptr(projection));
 }
 
+void buildBase(ComplexShape2D *shape)
+{
+    int i = 0;
+    shape->addElementVertex(vec3(-1.0, -1.0, 0.0));
+    shape->addElementVertex(vec3(1.0, -1.0, 0.0));
+    shape->addElementVertex(vec3(-1.0, 1.0, 0.0));
+    shape->addElementVertex(vec3(1.0, 1.0, 0.0));
+
+    for (int i = 0; i < shape->getVertexArray().size(); i++)
+    {
+        shape->addElementColors(vec4(0.13, 0.44, 0.7, 1.0));
+    }
+    shape->setVertexNum(shape->getVertexArray().size());
+    shape->setFragmentType(1);
+}
+
 int main()
 {
     Window w = Window("Hello triangle", WIDTH, HEIGHT);
@@ -34,8 +50,25 @@ int main()
 
         Scene scene = Scene();
 
-        ComplexShape2D sh = ComplexShape2D();
+        ComplexShape2D sh = ComplexShape2D(50);
 
+        float vertices[] = {
+            0.5f, 0.5f, 0.0f,
+            0.5f, -0.5f, 0.0f,
+            -0.5f, -0.5f, 0.0f,
+            -0.5f, 0.5f, 0.0f};
+
+        vector<vec3> tmp;
+
+        for (int i = 0; i < 3; i++)
+        {
+            int index = i * 3;
+            tmp.push_back(vec3(vertices[index], vertices[index + 1], vertices[index + 2]));
+        }
+
+        sh.setVertexArray(tmp);
+        sh.setVertexNum(sh.getVertexArray().size());
+        scene.addShape2dToScene(sh, GL_TRIANGLES);
         shader.use();
         initWindowView(shader);
 

@@ -19,4 +19,6 @@ public:
     GLenum getRenderMode(Shape2D shape);
 
     void drawScene(GLuint id);
+
+    void reshape(int width, int height);
 };

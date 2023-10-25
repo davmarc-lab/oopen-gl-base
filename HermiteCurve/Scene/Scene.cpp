@@ -42,3 +42,10 @@ void Scene::drawScene(GLuint id)
         glDrawArrays(renderMode, 0, shape.getVertexNum());
     }
 }
+
+void reshape(int width, int height)
+{
+    float aspectratio = (float) width / (float) height;
+
+    // if (aspectratio < 
+}
