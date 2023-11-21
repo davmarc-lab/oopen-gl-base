@@ -10,15 +10,16 @@ private:
     int width;
     int height;
     const char *windowName;
+    vec2 resolution;
 
 public:
     Window(const char *windowName, int w, int h);
 
-    int startWindow();
-
-    void startRender();
+    int initializeWindow();
 
     void closeWindow();
+
+    void terminateWindow();
 
     void processCloseInput();
 
@@ -26,5 +27,6 @@ public:
 
     GLFWwindow *getWindow() { return this->window; };
 
-    // void createShader(string vertexShader, string fragmentShader);
+    vec2 getResolution() { return this->resolution; }
+
 };

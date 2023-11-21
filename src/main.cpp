@@ -1,122 +1,59 @@
+﻿#include "Game/Game.hpp"
 #include "Lib.hpp"
+#include "Shape/ComplexShape2D.hpp"
 #include "Window/Window.hpp"
-#include "Shape/Shape.hpp"
 
 #include <iostream>
 
 #define PI 3.14159265358979323846
 
-// Create Shader class which use and retrieves this variable and add createShader() method
-GLuint fragmentShader;
-GLuint shaderProgram;
+const int WIDTH = 1000, HEIGHT = 900;
 
-const char *vertexShaderSource = "#version 330 core\n"
-                                 "layout (location = 0) in vec3 aPos;\n"
-                                 "void main()\n"
-                                 "{\n"
-                                 "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-                                 "}\0";
-const char *fragmentShaderSource = "#version 330 core\n"
-                                   "out vec4 FragColor;\n"
-                                   "void main()\n"
-                                   "{\n"
-                                   "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-                                   "}\n\0";
-
-// [TODO] => Add to Shader class
-void createShader()
+void rotateObject(ComplexShape2D* shape)
 {
-    unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-    glCompileShader(vertexShader);
-    // check for shader compile errors
-    int success;
-    char infoLog[512];
-    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-    if (!success)
-    {
-        glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-        cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n"
-             << infoLog << endl;
-    }
-    // fragment shader
-    fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-    glCompileShader(fragmentShader);
-    // check for shader compile errors
-    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-    if (!success)
-    {
-        glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-        cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n"
-             << infoLog << endl;
-    }
-    // link shaders
-    shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glLinkProgram(shaderProgram);
-    // check for linking errors
-    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-    if (!success)
-    {
-        glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-        cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n"
-             << infoLog << endl;
-    }
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
-}
-
-void buildCircle(float cx, float cy, float rx, float ry, Shape2D *shape)
-{
-    int i;
-    float stepA = (2 * PI) / shape->getTriangleNum();
-    float t, xx, yy;
-
-    shape->addElementVertex(vec3(cx, cy, 0.0));
-    shape->addElementColors(vec4(150.0 / 255.0, 75.0 / 255.0, 0.0, 0.2));
-
-    for (i = 0; i <= shape->getTriangleNum(); i++)
-    {
-        t = (float)i * stepA;
-        xx = cx + rx * cos(t);
-        yy = cy + ry * sin(t);
-        shape->addElementVertex(vec3(xx, yy, 0.0));
-        // Colore
-        shape->addElementColors(vec4(1.0, 0.0, 0.0, 1.0));
-    }
-    shape->setNumVertex(shape->getVertexArray().size());
+    float velocity = 3.5f;
+    shape->rotateShape(vec3(0, 0, 1), velocity);
 }
 
 int main()
 {
-    Window w = Window("Hello triangle", 800, 800);
-    Shape2D shape = Shape2D(50);
-    w.startWindow();
 
-    createShader();
+    Game game = Game(WIDTH, HEIGHT);
+    Window window = Window("Mario Kart", WIDTH, HEIGHT);
 
-    buildCircle(0, 0, 1.0, 1.0, &shape);
-    shape.createVertexArray();
+    // Initialize all game object and window
+    game.init();
 
-    while (!glfwWindowShouldClose(w.getWindow()))
+    // time variables
+    float deltaTime = 0.0f;
+    float lastFrame = 0.0f;
+
+    // Start of window loop
+    while (!glfwWindowShouldClose(window.getWindow()))
     {
+        // manage frames time
+        float currentFrame = glfwGetTime();
+        deltaTime = currentFrame - lastFrame;
+        lastFrame = currentFrame;
+        glfwPollEvents();
+
         // input
-        w.processCloseInput();
+        window.processCloseInput();
+        game.processInput(deltaTime, window);
+
+        // update game state
+        game.update(deltaTime);
 
         // render
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClearColor(0.5, 0.5, 0.5, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        glUseProgram(shaderProgram);
-        glBindVertexArray(shape.getVertexArrayObject()); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
-        glDrawArrays(GL_TRIANGLE_FAN, 0, shape.getVertexNum());
+        game.render();
 
-        // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
-        glfwSwapBuffers(w.getWindow());
-        glfwPollEvents();
+        // swap buffers and poll IO events
+        glfwSwapBuffers(window.getWindow());
     }
-
+    game.clear();
+    window.terminateWindow();
     return 0;
 }
