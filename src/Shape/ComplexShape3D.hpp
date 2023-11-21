@@ -11,7 +11,7 @@
  * This abstract class provides a standard base for the most of basic shapes using VAO, geometry and
  * color VBO, mid and other color, modellation matrix.
  */
-class ComplexShape2D
+class ComplexShape3D
 {
     public:
         // Standard VAO buffer.
@@ -88,20 +88,8 @@ class ComplexShape2D
 
         void setSolid() { this->isSolid = true; }
 
-        bool checkCollision(ComplexShape2D* shape)
+        bool checkCollision(ComplexShape3D* shape)
         {
-            if (shape->isSolid)
-            {
-                auto firstPos = this->getPosition();
-                auto firstSize = this->getSize();
-                auto secondPos = shape->getPosition();
-                auto secondSize = shape->getSize();
-
-                bool collisionX = firstPos.x + firstSize.x * 2 >= secondPos.x && secondPos.x + secondSize.x * 2 >= firstPos.x;
-                bool collisionY = firstPos.y + firstSize.y * 2 >= secondPos.y && secondPos.y + secondSize.y * 2 >= firstPos.y;
-
-                return collisionX && collisionY;
-            }
             return false;
         }
 
