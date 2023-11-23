@@ -1,6 +1,6 @@
 ﻿#include "Game/Game.hpp"
 #include "Lib.hpp"
-#include "Shape/ComplexShape2D.hpp"
+#include "Shape/ComplexShape3D.hpp"
 #include "Window/Window.hpp"
 
 #include <iostream>
@@ -9,7 +9,7 @@
 
 const int WIDTH = 1000, HEIGHT = 900;
 
-void rotateObject(ComplexShape2D* shape)
+void rotateObject(ComplexShape3D* shape)
 {
     float velocity = 3.5f;
     shape->rotateShape(vec3(0, 0, 1), velocity);

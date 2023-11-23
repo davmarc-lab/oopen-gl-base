@@ -7,11 +7,9 @@ game = ./Game/Game.cpp
 gameh = ./Game/Game.cpp
 win = ./Window/Window.cpp
 winh = ./Window/Window.hpp
-intsh = ./Shape/ComplexShape2D.hpp
-square = ./Shape/Square.cpp
-squareh = ./Shape/Square.hpp
-shape = ./Shape/Shape.cpp
-shapeh = ./Shape/Shape.hpp
+intsh = ./Shape/ComplexShape3D.hpp
+cube = ./Shape/Cube.cpp
+cubeh = ./Shape/Cube.hpp
 scene = ./Scene/Scene.cpp
 sceneh = ./Scene/Scene.hpp
 shader = ./Shader/Shader.cpp
@@ -26,8 +24,8 @@ utilh = ./Utils/utils.hpp
 
 all: main.exe
 
-main.exe: main.o window.o shape.o shader.o scene.o helper.o game.o square.o curve.o glad.o
-	g++ ${FLAGS} -o main.exe main.o window.o square.o helper.o game.o shape.o glad.o curve.o shader.o scene.o ${LIBS}
+main.exe: main.o window.o shader.o scene.o game.o cube.o glad.o
+	g++ ${FLAGS} -o main.exe main.o window.o cube.o game.o glad.o shader.o scene.o ${LIBS}
 
 main.o: main.cpp ${gladh} ${libh} ${intsh} ${gameh}
 	gcc -c ${FLAGS} main.cpp -o main.o
@@ -47,8 +45,8 @@ shader.o: ${shader} ${shaderh} ${shapeh} ${gladh}
 scene.o: ${scene} ${sceneh} ${libh} ${gladh}
 	gcc -c ${FLAGS} ${scene} -o scene.o
 
-square.o: ${square} ${squareh} ${libh} ${gladh} ${intsh} ${shaderh}
-	gcc -c ${FLAGS} ${square} -o square.o
+cube.o: ${cube} ${cubeh} ${libh} ${gladh} ${intsh} ${shaderh}
+	gcc -c ${FLAGS} ${cube} -o cube.o
 
 curve.o: ${curve} ${curveh} ${libh} ${gladh} ${intsh} ${shaderh}
 	gcc -c ${FLAGS} ${curve} -o curve.o

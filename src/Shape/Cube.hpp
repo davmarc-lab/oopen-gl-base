@@ -18,4 +18,9 @@ class Cube : public ComplexShape3D
     public:
         Cube(Color color);
 
+        virtual void createVertexArray() override;
+
+        virtual void draw(Shader shader) override;
+
+        virtual void clearShape() override;
 };
