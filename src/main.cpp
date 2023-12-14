@@ -35,7 +35,6 @@ int main()
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
-        glfwPollEvents();
 
         // input
         window.processCloseInput();
@@ -52,6 +51,7 @@ int main()
 
         // swap buffers and poll IO events
         glfwSwapBuffers(window.getWindow());
+        glfwPollEvents();
     }
     game.clear();
     window.terminateWindow();

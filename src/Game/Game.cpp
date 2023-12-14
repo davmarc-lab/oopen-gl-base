@@ -29,7 +29,7 @@ Scene scene = Scene(projection);
 
 void Game::init()
 {
-    Shader shader = Shader("./resources/vertexShader.vert", "./resources/fragmentShader.frag");
+    Shader shader = Shader("./resources/vertexShader.glsl", "./resources/fragmentShader.glsl");
 
     ComplexShape3D* cube = new Cube(vec4(1, 1, 0, 1));
     cube->createVertexArray();
