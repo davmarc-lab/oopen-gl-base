@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Shape/ComplexShape2D.hpp"
+#include "../Shape/Mesh.hpp"
 
 #include <cstdlib>
 
@@ -24,9 +24,9 @@ class Helper
 
         void setVelocity(float val) { this->velocity = val; }
         
-        void enemyMoveAction(vec3 direction, ComplexShape2D* entity);
+        void enemyMoveAction(vec3 direction, Mesh* entity);
 
-        static void buildCircle(float cx, float cy, float raggiox, float raggioy, ComplexShape2D* fig);
+        static void buildCircle(float cx, float cy, float raggiox, float raggioy, Mesh* fig);
 
         // Generates random 2D coordinates by given ranges. If a range is (n, n), it retrieves
         // only the n number without doing random generation.

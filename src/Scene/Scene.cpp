@@ -16,14 +16,14 @@ void Scene::drawScene()
     {
         auto shape = this->getSceneElements()[i].shape;
         auto shader = this->getSceneElements()[i].shader;
+        shader.use();
+        GLuint projLoc = glGetUniformLocation(shader.getId(), "projection");
+
+        glUniformMatrix4fv(projLoc, 1, GL_FALSE, value_ptr(this->projection));
+        shape->draw(shader);
 
         if (shape->isAlive())
         {
-            shader.use();
-            GLuint projLoc = glGetUniformLocation(shader.getId(), "projection");
-
-            glUniformMatrix4fv(projLoc, 1, GL_FALSE, value_ptr(this->projection));
-            shape->draw(shader);
         }
         else {
             

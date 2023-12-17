@@ -1,6 +1,6 @@
 ﻿#include "Game/Game.hpp"
 #include "Lib.hpp"
-#include "Shape/ComplexShape3D.hpp"
+#include "Shape/Mesh.hpp"
 #include "Window/Window.hpp"
 
 #include <iostream>
@@ -9,7 +9,7 @@
 
 const int WIDTH = 1000, HEIGHT = 900;
 
-void rotateObject(ComplexShape3D* shape)
+void rotateObject(Mesh* shape)
 {
     float velocity = 3.5f;
     shape->rotateShape(vec3(0, 0, 1), velocity);
@@ -44,9 +44,9 @@ int main()
         game.update(deltaTime);
 
         // render
-        glClearColor(0.5, 0.5, 0.5, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // also clear the depth buffer now!
+  
         game.render();
 
         // swap buffers and poll IO events

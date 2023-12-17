@@ -3,7 +3,7 @@
 #include <cstdlib>
 #include <ctime>
 
-void Helper::enemyMoveAction(vec3 direction, ComplexShape2D* entity)
+void Helper::enemyMoveAction(vec3 direction, Mesh* entity)
 {
     int pixel = 1;
     vec3 pos = vec3(entity->getModelMatrix()[3]);
@@ -12,7 +12,7 @@ void Helper::enemyMoveAction(vec3 direction, ComplexShape2D* entity)
     entity->translateShape(direction);
 }
 
-void Helper::buildCircle(float cx, float cy, float raggiox, float raggioy, ComplexShape2D* fig)
+void Helper::buildCircle(float cx, float cy, float raggiox, float raggioy, Mesh* fig)
 {
     float stepA = (2 * PI) / fig->getTriangleNum();
     float t, xx, yy;

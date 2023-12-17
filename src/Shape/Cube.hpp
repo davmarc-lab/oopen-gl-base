@@ -2,11 +2,11 @@
 
 #include "../Lib.hpp"
 #include "../Color/Color.hpp"
-#include "ComplexShape3D.hpp"
+#include "Mesh.hpp"
 
 #include <vector>
 
-class Cube : public ComplexShape3D
+class Cube : public Mesh
 {
     private:
         GLuint ebo;

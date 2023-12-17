@@ -8,7 +8,7 @@
 #include "../Lib.hpp"
 #include "../Color/Color.hpp"
 #include "../Window/Window.hpp"
-#include "../Shape/ComplexShape3D.hpp"
+#include "../Shape/Mesh.hpp"
 #include "../Shape/Cube.hpp"
 #include "../Scene/Scene.hpp"
 
@@ -23,20 +23,22 @@ Game::Game(unsigned int width, unsigned int height)
 
 }
 
-mat4 projection = ortho(0.0f, (float)1600, 0.0f, (float)900);
-
-Scene scene = Scene(projection);
+mat4 projection;
+Scene scene;
 
 void Game::init()
 {
+    projection = glm::perspective(glm::radians(45.0f), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
+    scene = Scene(projection);
+
     Shader shader = Shader("./resources/vertexShader.glsl", "./resources/fragmentShader.glsl");
 
-    ComplexShape3D* cube = new Cube(vec4(1, 1, 0, 1));
+    Mesh* cube = new Cube(vec4(1, 1, 0, 1));
     cube->createVertexArray();
 
     cube->setModelMatrix(mat4(1.0f));
-    cube->translateShape(vec3(100, 100, 0));
-    cube->scaleShape(vec3(25, 25, 25));
+    cube->translateShape(vec3(0, 0, 0));
+    cube->scaleShape(vec3(500, 500, 500));
 
     scene.addShape2dToScene(cube, shader);
 

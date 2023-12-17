@@ -3,17 +3,17 @@
 #include "../Lib.hpp"
 #include "../Color/Color.hpp"
 #include "../Shader/Shader.hpp"
-#include "../Collision/Collision.hpp"
 #include <vector>
-#include <glm/gtx/string_cast.hpp>
 
 /*
  * This abstract class provides a standard base for the most of basic shapes using VAO, geometry and
  * color VBO, mid and other color, modellation matrix.
  */
-class ComplexShape3D
+class Mesh
 {
     public:
+        /* ---Fields--- */
+
         // Standard VAO buffer.
         GLuint vao;
         // VBO buffer used for geometry.
@@ -40,6 +40,8 @@ class ComplexShape3D
 
         // Says if the shape is destroyed or alive
         bool isDestroyed = false;
+
+        /* ---Mehtods--- */
 
         // Add element to vertex vector3.
         void addElementVertex(vec3 elem) { this->vertex.push_back(elem); }
@@ -88,7 +90,7 @@ class ComplexShape3D
 
         void setSolid() { this->isSolid = true; }
 
-        bool checkCollision(ComplexShape3D* shape)
+        bool checkCollision(Mesh* shape)
         {
             return false;
         }

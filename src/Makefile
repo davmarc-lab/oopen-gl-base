@@ -7,7 +7,7 @@ game = ./Game/Game.cpp
 gameh = ./Game/Game.cpp
 win = ./Window/Window.cpp
 winh = ./Window/Window.hpp
-intsh = ./Shape/ComplexShape3D.hpp
+intsh = ./Shape/Mesh.hpp
 cube = ./Shape/Cube.cpp
 cubeh = ./Shape/Cube.hpp
 scene = ./Scene/Scene.cpp
@@ -23,6 +23,18 @@ util = ./Utils/utils.cpp
 utilh = ./Utils/utils.hpp
 
 all: main.exe
+
+# These lines are used for opengl.cpp
+###---START---###
+# main.exe: main.o shader.o glad.o
+# 	g++ ${FLAGS} -o main.exe main.o shader.o glad.o ${LIBS}
+
+# shader.o: ${shader} ${shaderh}
+# 	gcc -c ${FLAGS} ${shader} -o shader.o
+
+# main.o: opengl.cpp
+# 	gcc -c ${FLAGS} opengl.cpp -o main.o
+###---END---###
 
 main.exe: main.o window.o shader.o scene.o game.o cube.o glad.o
 	g++ ${FLAGS} -o main.exe main.o window.o cube.o game.o glad.o shader.o scene.o ${LIBS}
