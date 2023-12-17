@@ -37,7 +37,7 @@ void Game::init()
 
     Mesh* cube = new Cube(color::BLACK);
     cube->createVertexArray();
-    cube->scaleShape(vec3(0.5, 0.5, 0.5));
+    cube->scaleShape(vec3(1, 0.5, 0.5));
 
     scene.addShape2dToScene(cube, shader);
 

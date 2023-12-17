@@ -6,6 +6,7 @@
 #include <iostream>
 
 #define PI 3.14159265358979323846
+#define GAME_NAME "Welcome 3D"
 
 const int WIDTH = 1000, HEIGHT = 900;
 
@@ -13,7 +14,7 @@ int main()
 {
 
     Game game = Game(WIDTH, HEIGHT);
-    Window window = Window("Mario Kart", WIDTH, HEIGHT);
+    Window window = Window(GAME_NAME, WIDTH, HEIGHT);
 
     // Initialize all game object and window
     game.init();
