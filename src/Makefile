@@ -26,14 +26,11 @@ all: main.exe
 
 # These lines are used for opengl.cpp
 ###---START---###
-# main.exe: main.o shader.o glad.o
-# 	g++ ${FLAGS} -o main.exe main.o shader.o glad.o ${LIBS}
+opengl: opengl.o shader.o glad.o
+	g++ ${FLAGS} -o opengl.exe opengl.o shader.o glad.o ${LIBS}
 
-# shader.o: ${shader} ${shaderh}
-# 	gcc -c ${FLAGS} ${shader} -o shader.o
-
-# main.o: opengl.cpp
-# 	gcc -c ${FLAGS} opengl.cpp -o main.o
+opengl.o: opengl.cpp
+	gcc -c ${FLAGS} opengl.cpp -o opengl.o
 ###---END---###
 
 main.exe: main.o window.o shader.o scene.o game.o cube.o glad.o

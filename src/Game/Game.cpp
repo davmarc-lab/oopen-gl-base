@@ -33,12 +33,11 @@ void Game::init()
 
     Shader shader = Shader("./resources/vertexShader.glsl", "./resources/fragmentShader.glsl");
 
-    Mesh* cube = new Cube(vec4(1, 1, 0, 1));
-    cube->createVertexArray();
+    shader.use();
 
-    cube->setModelMatrix(mat4(1.0f));
-    cube->translateShape(vec3(0, 0, 0));
-    cube->scaleShape(vec3(500, 500, 500));
+    Mesh* cube = new Cube(color::BLACK);
+    cube->createVertexArray();
+    cube->scaleShape(vec3(0.5, 0.5, 0.5));
 
     scene.addShape2dToScene(cube, shader);
 

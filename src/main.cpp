@@ -9,12 +9,6 @@
 
 const int WIDTH = 1000, HEIGHT = 900;
 
-void rotateObject(Mesh* shape)
-{
-    float velocity = 3.5f;
-    shape->rotateShape(vec3(0, 0, 1), velocity);
-}
-
 int main()
 {
 

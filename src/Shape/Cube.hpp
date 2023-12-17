@@ -23,4 +23,5 @@ class Cube : public Mesh
         virtual void draw(Shader shader) override;
 
         virtual void clearShape() override;
+
 };

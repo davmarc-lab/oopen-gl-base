@@ -1,59 +1,41 @@
 #include "Cube.hpp"
+#include <glm/trigonometric.hpp>
+#include <string>
 
 void Cube::buildCube()
 {
+    // front
+    this->vertex.push_back(vec3(-1.0, -1.0, 1.0));
+    this->colors.push_back(vec4(1.0, 0.0, 0.0, 1.0));
+    this->vertex.push_back(vec3(1.0, -1.0, 1.0));
+    this->colors.push_back(vec4(0.0, 1.0, 0.0, 1.0));
+    this->vertex.push_back(vec3(1.0, 1.0, 1.0));
+    this->colors.push_back(vec4(0.0, 0.0, 1.0, 1.0));
+    this->vertex.push_back(vec3(-1.0, 1.0, 1.0));
+    this->colors.push_back(vec4(1.0, 0.0, 1.0, 1.0));
+    // back
+    this->vertex.push_back(vec3(-1.0, -1.0, -1.0));
+    this->colors.push_back(vec4(1.0, 0.0, 0.0,1.0));
+    this->vertex.push_back(vec3(1.0, -1.0, -1.0));
+    this->colors.push_back(vec4(0.0, 1.0, 0.0, 1.0));
+    this->vertex.push_back(vec3(1.0, 1.0, -1.0));
+    this->colors.push_back(vec4(0.0, 0.0, 1.0, 1.0));
+    this->vertex.push_back(vec3(-1.0, 1.0, -1.0));
+    this->colors.push_back(vec4(1.0, 0.0, 1.0,1.0));
+
+    this->indices.push_back(0); this->indices.push_back(1); this->indices.push_back(2);
+    this->indices.push_back(2); this->indices.push_back(3); this->indices.push_back(0);
+    this->indices.push_back(1); this->indices.push_back(5); this->indices.push_back(6);
+    this->indices.push_back(6); this->indices.push_back(2); this->indices.push_back(1);
+    this->indices.push_back(7); this->indices.push_back(6); this->indices.push_back(5);
+    this->indices.push_back(5); this->indices.push_back(4); this->indices.push_back(7);
+    this->indices.push_back(4); this->indices.push_back(0); this->indices.push_back(3);
+    this->indices.push_back(3); this->indices.push_back(7); this->indices.push_back(4);
+    this->indices.push_back(4); this->indices.push_back(5); this->indices.push_back(1);
+    this->indices.push_back(1); this->indices.push_back(0); this->indices.push_back(4);
+    this->indices.push_back(3); this->indices.push_back(2); this->indices.push_back(6);
+    this->indices.push_back(6); this->indices.push_back(7); this->indices.push_back(3);
     // idk if texture coordinates coulb be useful
-    float vertices[] = {
-        -1.0f, -1.0f, -1.0f,  0.0f, 0.0f,
-         1.0f, -1.0f, -1.0f,  1.0f, 0.0f,
-         1.0f,  1.0f, -1.0f,  1.0f, 1.0f,
-         1.0f,  1.0f, -1.0f,  1.0f, 1.0f,
-        -1.0f,  1.0f, -1.0f,  0.0f, 1.0f,
-        -1.0f, -1.0f, -1.0f,  0.0f, 0.0f,
-
-        -1.0f, -1.0f,  1.0f,  0.0f, 0.0f,
-         1.0f, -1.0f,  1.0f,  1.0f, 0.0f,
-         1.0f,  1.0f,  1.0f,  1.0f, 1.0f,
-         1.0f,  1.0f,  1.0f,  1.0f, 1.0f,
-        -1.0f,  1.0f,  1.0f,  0.0f, 1.0f,
-        -1.0f, -1.0f,  1.0f,  0.0f, 0.0f,
-
-        -1.0f,  1.0f,  1.0f,  1.0f, 0.0f,
-        -1.0f,  1.0f, -1.0f,  1.0f, 1.0f,
-        -1.0f, -1.0f, -1.0f,  0.0f, 1.0f,
-        -1.0f, -1.0f, -1.0f,  0.0f, 1.0f,
-        -1.0f, -1.0f,  1.0f,  0.0f, 0.0f,
-        -1.0f,  1.0f,  1.0f,  1.0f, 0.0f,
-
-         1.0f,  1.0f,  1.0f,  1.0f, 0.0f,
-         1.0f,  1.0f, -1.0f,  1.0f, 1.0f,
-         1.0f, -1.0f, -1.0f,  0.0f, 1.0f,
-         1.0f, -1.0f, -1.0f,  0.0f, 1.0f,
-         1.0f, -1.0f,  1.0f,  0.0f, 0.0f,
-         1.0f,  1.0f,  1.0f,  1.0f, 0.0f,
-
-        -1.0f, -1.0f, -1.0f,  0.0f, 1.0f,
-         1.0f, -1.0f, -1.0f,  1.0f, 1.0f,
-         1.0f, -1.0f,  1.0f,  1.0f, 0.0f,
-         1.0f, -1.0f,  1.0f,  1.0f, 0.0f,
-        -1.0f, -1.0f,  1.0f,  0.0f, 0.0f,
-        -1.0f, -1.0f, -1.0f,  0.0f, 1.0f,
-
-        -1.0f,  1.0f, -1.0f,  0.0f, 1.0f,
-         1.0f,  1.0f, -1.0f,  1.0f, 1.0f,
-         1.0f,  1.0f,  1.0f,  1.0f, 0.0f,
-         1.0f,  1.0f,  1.0f,  1.0f, 0.0f,
-        -1.0f,  1.0f,  1.0f,  0.0f, 0.0f,
-        -1.0f,  1.0f, -1.0f,  0.0f, 1.0f
-    };
-    int size = sizeof(vertices) / sizeof(vertices[0]);
-
-    for (int i = 0; i < size; i +=5)
-    {
-        this->vertex.push_back(vec3(vertices[i], vertices[i+1], vertices[i+2]));
-        this->colors.push_back(vec4(this->getColor().getColorVector()));
-    }
-    
 }
 
 Cube::Cube(Color color)
@@ -66,15 +48,20 @@ Cube::Cube(Color color)
 void Cube::createVertexArray()
 {
     glGenVertexArrays(1, &this->vao);
-    glBindVertexArray(this->vao);
 
     // vbo geometry
     glGenBuffers(1, &this->vbo_g);
+    glBindVertexArray(this->vao);
     glBindBuffer(GL_ARRAY_BUFFER, this->vbo_g);
-    glBufferData(GL_ARRAY_BUFFER, this->vertex.size() * sizeof(vec3), this->vertex.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, this->vertex.size() * sizeof(vec3), this->vertex.data(),  GL_STATIC_DRAW);
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
     glEnableVertexAttribArray(0);
+
+    // ebo indices
+    glGenBuffers(1, &this->ebo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->ebo);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->indices.size() * sizeof(GLuint), this->indices.data(), GL_STATIC_DRAW); 
 
     // vbo colors
     glGenBuffers(1, &this->vbo_c);
@@ -87,18 +74,19 @@ void Cube::createVertexArray()
 
 void Cube::draw(Shader shader)
 {
-    auto matLoc = glGetUniformLocation(shader.getId(), "projection");
-    glUniformMatrix4fv(matLoc, 1, GL_FALSE, value_ptr(this->model));
+    auto modelLoc = glGetUniformLocation(shader.getId(), "model");
+    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(this->model));
     mat4 view = mat4(1.0f);
     view  = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+    view = glm::rotate(view, radians(45.0f), vec3(1, 1, 0));
 
     auto viewLoc = glGetUniformLocation(shader.getId(), "view");
+    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view[0][0]);
 
+    glPointSize(10.0);
     glBindVertexArray(this->vao);
-    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, value_ptr(view));
-
-    glDrawArrays(GL_TRIANGLES, 0, this->vertex.size());
-
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    glDrawElements(GL_TRIANGLES, this->indices.size() * sizeof(GLuint), GL_UNSIGNED_INT, 0);
 }
 
 void Cube::clearShape()
