@@ -1,6 +1,6 @@
 # TODO
 
- List of things to do in the opengl-three-dimension base:
+List of things to do in the opengl-three-dimension base:
 
 - [ ] Quaternions
 - [ ] Camera (interactions)
