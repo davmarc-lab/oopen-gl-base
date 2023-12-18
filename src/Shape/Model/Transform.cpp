@@ -1,9 +1,10 @@
 #include "Transform.hpp"
+#include <glm/ext/quaternion_trigonometric.hpp>
 #include <glm/gtx/quaternion.hpp>
 
 void Transform::applyTransofrmation(vec3 translateVector,
         vec3 scaleVector,
-        vec3 rotateAxis,
+        vec3 rotationAxis,
         float rotationValue)
 {
     mat4 base = mat4(1.0f);
@@ -11,25 +12,15 @@ void Transform::applyTransofrmation(vec3 translateVector,
 
     translate = glm::translate(base, translateVector);
     scale = glm::scale(base, scaleVector);
-    if (rotateAxis == vec3(0))
+
+    if (rotationAxis == vec3(0))
     {
-        rotateAxis = vec3(1);
+        rotationAxis = vec3(1);
         rotationValue = 0;
     }
 
-    rotate = glm::rotate(rotate, radians(rotationValue), rotateAxis);
+    this->rotation = angleAxis(radians(rotationValue), rotationAxis);
+    rotate = toMat4(this->rotation);
 
-    /* if (quaternion not set) */
-    /* { */
-    /*     rotate = glm::rotate(rotate, radians(rotationValue), rotateAxis); */
-    /* } */
-    /* else */
-    /* { */
-    /*     // rotation with quaternion */
-    /*     vec3 tmp = rotateAxis * sin(rotationValue / 2); */
-    /*     this->rotation = quat(tmp); */
-    /*     rotate = toMat4(this->rotation); */
-    /* } */
-
-    this->setModelMatrix(this->model * scale * rotate * translate);
+    this->setModelMatrix(this->model * translate * rotate * scale);
 }

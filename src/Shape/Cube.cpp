@@ -43,7 +43,6 @@ Cube::Cube(Color color)
     this->color = color;
     buildCube();
     this->setVertexNum(this->vertex.size());
-    this->setModelMatrix(mat4(1.0f));
 }
 
 void Cube::createVertexArray()

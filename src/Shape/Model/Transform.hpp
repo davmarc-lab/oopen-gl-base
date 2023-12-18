@@ -10,7 +10,7 @@ class Transform
         mat4 model = mat4(1.0f);
         vec3 translate = vec3(0.0f);
         vec3 scale = vec3(1.0f);
-        quat rotation = quat(0, 0, 0, 0);
+        quat rotation = quat(1, 0, 0, 0);
 
     public:
         Transform() {}
@@ -21,6 +21,6 @@ class Transform
 
         void applyTransofrmation(vec3 translateVector,
                 vec3 scaleVector,
-                vec3 rotateAxis,
+                vec3 rotationAxis,
                 float rotationValue);
 };

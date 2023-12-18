@@ -37,7 +37,8 @@ void Game::init()
     shader.use();
 
     cube->createVertexArray();
-    cube->transformMesh(vec3(0), vec3(0.5f), vec3(0, 1, 1), 45);
+    cube->transformMesh(vec3(0), vec3(0.5f), vec3(0, 0, 0), 0);
+    /* cube->transformMesh(vec3(0), vec3(1), vec3(0, 1, 0), 45); */
 
     scene.addShape2dToScene(cube, shader);
 
@@ -60,7 +61,8 @@ static float rotval = 0;
 
 void Game::update(float deltaTime)
 {
-
+    cube->transformMesh(vec3(0), vec3(1), vec3(0, 1, 0), 1);
+    cube->transformMesh(vec3(0), vec3(1), vec3(0, 0, 1), 1);
 }
 
 void Game::render()
