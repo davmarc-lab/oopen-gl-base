@@ -3,6 +3,7 @@
 #include "../Lib.hpp"
 #include "../Color/Color.hpp"
 #include "../Shader/Shader.hpp"
+#include "Model/Transform.hpp"
 #include <vector>
 
 /*
@@ -28,8 +29,8 @@ class Mesh
         Color color;
         // The center vertex color of the shape.
         Color midColor;
-        // Modellation matrix.
-        mat4 model = mat4(1.0f);
+        // Transform the model matrix.
+        Transform transform;
         // Number of vertex of the shape.
         int nvertex = 0;
         // Number of triangles of the shape.
@@ -83,10 +84,21 @@ class Mesh
         void setColorsArray(vector<vec4> colors) { this->colors = colors; }
 
         // Retrieves the modellation matrix of the shape.
-        mat4 getModelMatrix() { return this->model; }
+        mat4 getModelMatrix() { return this->transform.getModelMatrix(); }
 
         // This metod sets the model matrix.
-        void setModelMatrix(mat4 model) { this->model = mat4(model); }
+        void setModelMatrix(mat4 model) { this->transform.setModelMatrix(model); }
+
+        void transformMesh(vec3 translateVector,
+                vec3 scaleVector,
+                vec3 rotateAxis,
+                float rotationValue) 
+        {
+            this->transform.applyTransofrmation(translateVector,
+                scaleVector,
+                rotateAxis,
+                rotationValue);
+        }
 
         void setSolid() { this->isSolid = true; }
 
@@ -101,24 +113,11 @@ class Mesh
 
         bool isAlive() { return !this->isDestroyed; }
 
-        // This method transform the model matrix for scaling puropose.
-        void scaleShape(vec3 mod) { this->setModelMatrix(scale(this->getModelMatrix(), mod)); }
-
-        // This method transform the model matrix for translating purpose.
-        void translateShape(vec3 mod) { this->setModelMatrix(translate(this->getModelMatrix(), mod)); }
-
-        // This method transform the model matrix for rotating purpose.
-        void rotateShape(vec3 mod, float w) { this->setModelMatrix(rotate(this->getModelMatrix(), radians(w), mod)); }
-
         // Retrieves the VertexArrayObject of the shape.
         GLuint getVertexArrayObject() { return this->vao; }
 
         // Retrieves the vector of colors for each vertex.
         vector<vec4> getColorsArray() { return this->colors; }
-
-        vec3 getPosition() { return this->model[3]; }
-
-        vec3 getSize() { return vec3(this->model[0][0], this->model[1][1], this->model[2][2]); }
 
         // This method clear the vertex vector.
         void clearVertexArray() { this->vertex.clear(); }

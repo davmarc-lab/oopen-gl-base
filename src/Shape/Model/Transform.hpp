@@ -19,7 +19,7 @@ class Transform
 
         mat4 getModelMatrix() { return this->model; }
 
-        mat4 applyTransofrmation(vec3 translateVector,
+        void applyTransofrmation(vec3 translateVector,
                 vec3 scaleVector,
                 vec3 rotateAxis,
                 float rotationValue);

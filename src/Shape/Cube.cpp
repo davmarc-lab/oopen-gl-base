@@ -43,6 +43,7 @@ Cube::Cube(Color color)
     this->color = color;
     buildCube();
     this->setVertexNum(this->vertex.size());
+    this->setModelMatrix(mat4(1.0f));
 }
 
 void Cube::createVertexArray()
@@ -75,13 +76,7 @@ void Cube::createVertexArray()
 void Cube::draw(Shader shader)
 {
     auto modelLoc = glGetUniformLocation(shader.getId(), "model");
-    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(this->model));
-    mat4 view = mat4(1.0f);
-    view  = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-    view = glm::rotate(view, radians(45.0f), vec3(1, 1, 0));
-
-    auto viewLoc = glGetUniformLocation(shader.getId(), "view");
-    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view[0][0]);
+    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(this->transform.getModelMatrix()));
 
     glPointSize(10.0);
     glBindVertexArray(this->vao);

@@ -8,6 +8,8 @@ gameh = ./Game/Game.cpp
 win = ./Window/Window.cpp
 winh = ./Window/Window.hpp
 intsh = ./Shape/Mesh.hpp
+transf = ./Shape/Model/Transform.cpp
+transfh = ./Shape/Model/Transform.hpp
 cube = ./Shape/Cube.cpp
 cubeh = ./Shape/Cube.hpp
 scene = ./Scene/Scene.cpp
@@ -33,8 +35,8 @@ opengl.o: opengl.cpp
 	gcc -c ${FLAGS} opengl.cpp -o opengl.o
 ###---END---###
 
-main.exe: main.o window.o shader.o scene.o game.o cube.o glad.o
-	g++ ${FLAGS} -o main.exe main.o window.o cube.o game.o glad.o shader.o scene.o ${LIBS}
+main.exe: main.o window.o shader.o scene.o game.o transf.o cube.o glad.o
+	g++ ${FLAGS} -o main.exe main.o window.o transf.o cube.o game.o glad.o shader.o scene.o ${LIBS}
 
 main.o: main.cpp ${gladh} ${libh} ${intsh} ${gameh}
 	gcc -c ${FLAGS} main.cpp -o main.o
@@ -44,6 +46,9 @@ window.o: ${win} ${winh} ${libh} ${gladh}
 
 shape.o: ${shape} ${shapeh} ${libh} ${gladh} ${intsh} ${shaderh}
 	gcc -c ${FLAGS} ${shape} -o shape.o
+
+transf.o: ${transf} ${transfh} ${libh}
+	gcc -c ${FLAGS} ${transf} -o transf.o
 
 game.o: ${game} ${gameh}
 	gcc -c ${FLAGS} ${game} -o game.o

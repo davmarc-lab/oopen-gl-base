@@ -25,6 +25,7 @@ Game::Game(unsigned int width, unsigned int height)
 
 mat4 projection;
 Scene scene;
+Mesh* cube = new Cube(color::BLACK);
 
 void Game::init()
 {
@@ -35,11 +36,17 @@ void Game::init()
 
     shader.use();
 
-    Mesh* cube = new Cube(color::BLACK);
     cube->createVertexArray();
-    cube->scaleShape(vec3(0.5, 0.5, 0.5));
+    cube->transformMesh(vec3(0), vec3(0.5f), vec3(0, 1, 1), 45);
 
     scene.addShape2dToScene(cube, shader);
+
+    mat4 view = mat4(1.0f);
+    view  = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+    /* view = glm::rotate(view, radians(45.0f), vec3(1, 1, 0)); */
+
+    auto viewLoc = glGetUniformLocation(shader.getId(), "view");
+    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view[0][0]);
 
     this->state = GAME_ACTIVE;
 }
@@ -48,6 +55,8 @@ void Game::processInput(float deltaTime, Window window)
 {
 
 }
+
+static float rotval = 0;
 
 void Game::update(float deltaTime)
 {
