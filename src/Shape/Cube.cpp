@@ -91,6 +91,11 @@ void Cube::draw(Shader shader)
 
 void Cube::clearShape()
 {
-    cout << "TODO" << endl;
+    this->clearVertexArray();
+    this->clearColorArray();
+    glDeleteVertexArrays(1, &this->vao);
+    glDeleteBuffers(1, &this->vbo_g);
+    glDeleteBuffers(1, &this->ebo);
+    glDeleteBuffers(1, &this->vbo_c);
 }
 

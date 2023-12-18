@@ -1,16 +1,16 @@
- # TODO
+# TODO
 
  List of things to do in the opengl-three-dimension base:
 
- - Quaternions
- - Camera
-     - movement
-     - interactions
- - Textures
- - Materials
- - Physics ?
- - Improve Mesh class: ?
-     - use actions
-     - use components
-     - ecs pattern
-     - event pattern
+- [ ] Quaternions
+- [ ] Camera (interactions)
+- [ ] Textures
+- [ ] Materials
+- [ ] Physics ?
+- [ ] Improve Mesh class (some patterns?) ?
+- [ ] Basic Mesh:
+    - [x] Cube
+    - [ ] Sphere
+    - [ ] Cone
+    - [ ] Pyramid
+    - [ ] Thorus
