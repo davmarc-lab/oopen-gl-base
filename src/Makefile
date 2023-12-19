@@ -3,6 +3,8 @@ LIBS = -lglfw -lGLU -lGL -lX11 -lfreetype -lXrandr -lpthread -lXi -ldl
 
 glad = ./include/glad/glad.c
 gladh = ./include/glad/glad.h
+camera = ./Camera/Camera.cpp
+camerah = ./Camera/Camera.hpp
 game = ./Game/Game.cpp
 gameh = ./Game/Game.cpp
 win = ./Window/Window.cpp
@@ -35,14 +37,17 @@ opengl.o: opengl.cpp
 	gcc -c ${FLAGS} opengl.cpp -o opengl.o
 ###---END---###
 
-main.exe: main.o window.o shader.o scene.o game.o transf.o cube.o glad.o
-	g++ ${FLAGS} -o main.exe main.o window.o transf.o cube.o game.o glad.o shader.o scene.o ${LIBS}
+main.exe: main.o window.o camera.o shader.o scene.o game.o transf.o cube.o glad.o
+	g++ ${FLAGS} -o main.exe main.o window.o camera.o transf.o cube.o game.o glad.o shader.o scene.o ${LIBS}
 
 main.o: main.cpp ${gladh} ${libh} ${intsh} ${gameh}
 	gcc -c ${FLAGS} main.cpp -o main.o
 
 window.o: ${win} ${winh} ${libh} ${gladh}
 	gcc -c ${FLAGS} ${win} -o window.o
+
+camera.o: ${camera} ${camerah} ${libh}
+	gcc -c ${FLAGS} ${camera} -o camera.o
 
 shape.o: ${shape} ${shapeh} ${libh} ${gladh} ${intsh} ${shaderh}
 	gcc -c ${FLAGS} ${shape} -o shape.o

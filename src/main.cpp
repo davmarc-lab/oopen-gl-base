@@ -8,7 +8,7 @@
 #define PI 3.14159265358979323846
 #define GAME_NAME "Welcome 3D"
 
-const int WIDTH = 1000, HEIGHT = 900;
+const int WIDTH = 1812, HEIGHT = 1017;
 
 int main()
 {

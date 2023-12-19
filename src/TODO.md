@@ -2,8 +2,8 @@
 
 List of things to do in the opengl-three-dimension base:
 
-- [ ] Quaternions, working on it (standard rotation done, to implement quaternion operation)
-- [ ] Camera (interactions)
+- [x] Quaternions (to implement quaternion operation)
+- [ ] Camera (change the processInput camera method, it could be better)
 - [ ] Textures
 - [ ] Materials (for this is needed Lights section)
 - [ ] Lights
