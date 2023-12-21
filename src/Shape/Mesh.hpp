@@ -4,6 +4,7 @@
 #include "../Color/Color.hpp"
 #include "../Shader/Shader.hpp"
 #include "Model/Transform.hpp"
+#include "Textures/Texture.hpp"
 #include <vector>
 
 /*
@@ -25,12 +26,16 @@ class Mesh
         vector<vec3> vertex;
         // Vector of all color for each vertex.
         vector<vec4> colors;
+        // Vector of TexCoords.
+        vector<vec2> texCoord;
         // The primary color of the shape.
         Color color;
         // The center vertex color of the shape.
         Color midColor;
         // Transform the model matrix.
         Transform transform;
+        // Texture object.
+        Texture texture;
         // Number of vertex of the shape.
         int nvertex = 0;
         // Number of triangles of the shape.
@@ -61,6 +66,8 @@ class Mesh
 
         // This method sets the number of triangles of the shape.
         void setTriangleNum(int n) { this->ntriangle = n; }
+
+        vector<vec2> getTextureCoords() { return this->texCoord; }
 
         // This method sets the primary color of the shape.
         void setColor(Color color) { this->color = color; }
@@ -98,6 +105,15 @@ class Mesh
                 scaleVector,
                 rotateAxis,
                 rotationValue);
+        }
+
+        void attachTexture(Texture texture) {
+            this->texture = texture;
+            
+            // create vbo for texture
+            cout << this->texCoord.size() << endl;
+            glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
+            glEnableVertexAttribArray(2);
         }
 
         void setSolid() { this->isSolid = true; }

@@ -12,6 +12,8 @@ winh = ./Window/Window.hpp
 intsh = ./Shape/Mesh.hpp
 transf = ./Shape/Model/Transform.cpp
 transfh = ./Shape/Model/Transform.hpp
+texture = ./Shape/Textures/Texture.cpp
+textureh = ./Shape/Textures/Texture.hpp
 cube = ./Shape/Cube.cpp
 cubeh = ./Shape/Cube.hpp
 scene = ./Scene/Scene.cpp
@@ -23,6 +25,7 @@ hermh = ./Math/Hermite.hpp
 curve = ./Shape/Curve.cpp
 curveh = ./Shape/Curve.hpp
 libh = Lib.hpp
+imageh = ./include/texture/stb_image.hpp
 util = ./Utils/utils.cpp
 utilh = ./Utils/utils.hpp
 
@@ -37,8 +40,8 @@ opengl.o: opengl.cpp
 	gcc -c ${FLAGS} opengl.cpp -o opengl.o
 ###---END---###
 
-main.exe: main.o window.o camera.o shader.o scene.o game.o transf.o cube.o glad.o
-	g++ ${FLAGS} -o main.exe main.o window.o camera.o transf.o cube.o game.o glad.o shader.o scene.o ${LIBS}
+main.exe: main.o window.o camera.o shader.o scene.o game.o transf.o texture.o cube.o glad.o
+	g++ ${FLAGS} -o main.exe main.o window.o camera.o transf.o texture.o cube.o game.o glad.o shader.o scene.o ${LIBS}
 
 main.o: main.cpp ${gladh} ${libh} ${intsh} ${gameh}
 	gcc -c ${FLAGS} main.cpp -o main.o
@@ -54,6 +57,9 @@ shape.o: ${shape} ${shapeh} ${libh} ${gladh} ${intsh} ${shaderh}
 
 transf.o: ${transf} ${transfh} ${libh}
 	gcc -c ${FLAGS} ${transf} -o transf.o
+
+texture.o: ${texture} ${textureh} ${libh} ${imageh}
+	gcc -c ${FLAGS} ${texture} -o texture.o
 
 game.o: ${game} ${gameh}
 	gcc -c ${FLAGS} ${game} -o game.o

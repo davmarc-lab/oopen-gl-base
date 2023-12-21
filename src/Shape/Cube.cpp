@@ -22,6 +22,12 @@ void Cube::buildCube()
     this->colors.push_back(vec4(0.0, 0.0, 1.0, 1.0));
     this->vertex.push_back(vec3(-1.0, 1.0, -1.0));
     this->colors.push_back(vec4(1.0, 0.0, 1.0,1.0));
+    
+    this->texCoord.push_back(vec2(1, 0));
+    this->texCoord.push_back(vec2(1, 1));
+    this->texCoord.push_back(vec2(0, 1));
+    this->texCoord.push_back(vec2(0, 0));
+    /* this->texCoord.push_back(vec2(0, 0)); */
 
     this->indices.push_back(0); this->indices.push_back(1); this->indices.push_back(2);
     this->indices.push_back(2); this->indices.push_back(3); this->indices.push_back(0);
@@ -33,6 +39,7 @@ void Cube::buildCube()
     this->indices.push_back(3); this->indices.push_back(7); this->indices.push_back(4);
     this->indices.push_back(4); this->indices.push_back(5); this->indices.push_back(1);
     this->indices.push_back(1); this->indices.push_back(0); this->indices.push_back(4);
+    this->texCoord.push_back(vec2(0, 0));
     this->indices.push_back(3); this->indices.push_back(2); this->indices.push_back(6);
     this->indices.push_back(6); this->indices.push_back(7); this->indices.push_back(3);
     // idk if texture coordinates coulb be useful
@@ -77,7 +84,6 @@ void Cube::draw(Shader shader)
     auto modelLoc = glGetUniformLocation(shader.getId(), "model");
     glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(this->transform.getModelMatrix()));
 
-    glPointSize(10.0);
     glBindVertexArray(this->vao);
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glDrawElements(GL_TRIANGLES, this->indices.size() * sizeof(GLuint), GL_UNSIGNED_INT, 0);

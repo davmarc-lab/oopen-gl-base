@@ -29,6 +29,7 @@ Scene scene;
 Mesh* cube = new Cube(color::BLACK);
 Camera camera = Camera();
 Shader shader;
+Texture texture;
 
 void Game::init()
 {
@@ -42,6 +43,11 @@ void Game::init()
     cube->createVertexArray();
     cube->transformMesh(vec3(0), vec3(1), vec3(1), 0);
     camera.setCameraPosition(vec3(0, 0, 4));
+
+    texture = Texture("./resources/textures/woddenContainer.jpg", cube->getTextureCoords());
+    texture.createTexture();
+    cube->attachTexture(texture);
+    shader.setInt("ourTexture", texture.getId());
 
     scene.addShape2dToScene(cube, shader);
 
@@ -91,16 +97,16 @@ static float rotval = 0;
 
 void Game::update(float deltaTime)
 {
-    /* cube->transformMesh(vec3(0.1, 0, 0), vec3(1), vec3(0, 1, 0), 0); */
-    cube->transformMesh(vec3(0.002, 0, 0), vec3(1), vec3(0, 1, 0), 0);
-
     auto viewLoc = glGetUniformLocation(shader.getId(), "view");
     glUniformMatrix4fv(viewLoc, 1, GL_FALSE, value_ptr(camera.getViewMatrix()));
-
+    
+    //rotate cube y axis
+    cube->transformMesh(vec3(0), vec3(1), vec3(0, 1, 0), 30 * deltaTime);
 }
 
 void Game::render()
 {
+    glBindTexture(GL_TEXTURE_2D, texture.getId());
     scene.drawScene();
 }
 
