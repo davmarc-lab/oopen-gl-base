@@ -22,6 +22,8 @@ class Mesh
         GLuint vbo_g;
         // VBO buffer used for colors.
         GLuint vbo_c;
+        // VBO buffer used for texCoords.
+        GLuint vbo_t;
         // Vector of all vertices of the shape.
         vector<vec3> vertex;
         // Vector of all color for each vertex.
@@ -109,9 +111,13 @@ class Mesh
 
         void attachTexture(Texture texture) {
             this->texture = texture;
-            
-            // create vbo for texture
-            cout << this->texCoord.size() << endl;
+
+            glBindVertexArray(this->vao);
+
+            glGenBuffers(1, &this->vbo_t);
+            glBindBuffer(GL_ARRAY_BUFFER, this->vbo_t);
+            glBufferData(GL_ARRAY_BUFFER, this->texCoord.size() * sizeof(vec2), this->texCoord.data(), GL_STATIC_DRAW);
+
             glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
             glEnableVertexAttribArray(2);
         }

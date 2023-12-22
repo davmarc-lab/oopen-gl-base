@@ -30,5 +30,4 @@ class Texture
         vector<vec2> getTexCoordsVector() { return this->texCoord; }
 
         GLuint getId() { return this->id; }
-
 };

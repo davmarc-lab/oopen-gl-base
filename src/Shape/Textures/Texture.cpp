@@ -20,25 +20,32 @@ void Texture::createTexture()
 
 void Texture::createTexture(GLuint mode)
 {
-    this->textureMode = mode;
-    glGenTextures(0, &this->id);
-    glBindTexture(GL_TEXTURE_1D, this->id);
-
-    // textures parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
     if (this->data != NULL)
     {
+        GLenum format;
+        if (this->channelsNumber == 1)
+            format = GL_RED;
+        else if (this->channelsNumber == 3)
+            format = GL_RGB;
+        else if (this->channelsNumber == 4)
+            format = GL_RGBA;
+        this->textureMode = mode;
+        glGenTextures(0, &this->id);
+        glBindTexture(GL_TEXTURE_1D, this->id);
+
+        // textures parameters
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
         glTexImage2D(GL_TEXTURE_2D,
                 0,
-                GL_RGB,
+                format,
                 this->width,
                 this->height,
                 0,
-                GL_RGB,
+                format,
                 GL_UNSIGNED_BYTE,
                 this->data);
         glGenerateMipmap(GL_TEXTURE_2D);

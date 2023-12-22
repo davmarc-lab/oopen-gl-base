@@ -42,12 +42,13 @@ void Game::init()
 
     cube->createVertexArray();
     cube->transformMesh(vec3(0), vec3(1), vec3(1), 0);
-    camera.setCameraPosition(vec3(0, 0, 4));
 
-    texture = Texture("./resources/textures/woddenContainer.jpg", cube->getTextureCoords());
+    texture = Texture("resources/textures/woddenContainer.jpg", cube->getTextureCoords());
     texture.createTexture();
     cube->attachTexture(texture);
-    shader.setInt("ourTexture", texture.getId());
+    shader.setInt("ourTexture", 0);
+
+    camera.setCameraPosition(vec3(0, 0, 4));
 
     scene.addShape2dToScene(cube, shader);
 
@@ -108,6 +109,7 @@ void Game::render()
 {
     glBindTexture(GL_TEXTURE_2D, texture.getId());
     scene.drawScene();
+    shader.setInt("ourTexture", texture.getId());
 }
 
 void Game::clear()

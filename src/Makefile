@@ -36,8 +36,8 @@ all: main.exe
 opengl: opengl.o shader.o glad.o
 	g++ ${FLAGS} -o opengl.exe opengl.o shader.o glad.o ${LIBS}
 
-opengl.o: opengl.cpp
-	gcc -c ${FLAGS} opengl.cpp -o opengl.o
+opengl.o: main.cpp ${imageh} ${libh}
+	gcc -c ${FLAGS} main.cpp -o opengl.o
 ###---END---###
 
 main.exe: main.o window.o camera.o shader.o scene.o game.o transf.o texture.o cube.o glad.o
