@@ -36,7 +36,7 @@ void Game::init()
     projection = glm::perspective(glm::radians(45.0f), (float)WIDTH / (float)HEIGHT, 0.1f, 500.0f);
     scene = Scene(projection);
 
-    shader = Shader("./resources/vertexShader.glsl", "./resources/fragmentShader.glsl");
+    shader = Shader("./resources/lightVertexShader.glsl", "./resources/lightFragmentShader.glsl");
 
     shader.use();
 
@@ -44,9 +44,13 @@ void Game::init()
     cube->transformMesh(vec3(0), vec3(1), vec3(1), 0);
 
     texture = Texture("resources/textures/woddenContainer.jpg", cube->getTextureCoords());
-    texture.createTexture();
-    cube->attachTexture(texture);
-    shader.setInt("ourTexture", 0);
+    /* texture.createTexture(); */
+    /* cube->attachTexture(texture); */
+    /* shader.setInt("ourTexture", 0); */
+    shader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
+    shader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
+    shader.setVec3("lightPos", 3, 1, 0);
+
 
     camera.setCameraPosition(vec3(0, 0, 4));
 
@@ -101,15 +105,14 @@ void Game::update(float deltaTime)
     auto viewLoc = glGetUniformLocation(shader.getId(), "view");
     glUniformMatrix4fv(viewLoc, 1, GL_FALSE, value_ptr(camera.getViewMatrix()));
     
-    //rotate cube y axis
-    cube->transformMesh(vec3(0), vec3(1), vec3(0, 1, 0), 30 * deltaTime);
+    /* cube->transformMesh(vec3(0), vec3(1), vec3(0, 1, 0), 30 * deltaTime); */
 }
 
 void Game::render()
 {
-    glBindTexture(GL_TEXTURE_2D, texture.getId());
+    /* glBindTexture(GL_TEXTURE_2D, texture.getId()); */
     scene.drawScene();
-    shader.setInt("ourTexture", texture.getId());
+    /* shader.setInt("ourTexture", texture.getId()); */
 }
 
 void Game::clear()
