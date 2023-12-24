@@ -31,9 +31,9 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath)
         vertexCode = vShaderStream.str();
         fragmentCode = fShaderStream.str();
     }
-    catch (ifstream::failure e)
+    catch (ifstream::failure& e)
     {
-        cout << "ERROR::SHADER::FILE_NOT_SUCCESSFULLY_READ" << endl << e.code() << endl;
+        cout << "ERROR::SHADER::FILE_NOT_SUCCESSFULLY_READ" << endl << e.what() << endl;
     }
 
     const char *vShaderCode = vertexCode.c_str();

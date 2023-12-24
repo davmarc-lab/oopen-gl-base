@@ -18,16 +18,17 @@ private:
     // This method check the vertex and fragment shader file seeking for compilation or linking errors.
     void checkCompileErrors(GLuint shader, string type)
     {
-        int success;
-        char infoLog[1024];
+        GLint success;
+        GLchar infoLog[1024];
 
         if (type != "PROGRAM")
         {
             glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
             if (!success)
             {
+                glGetShaderInfoLog(shader, 1024, NULL, infoLog);
                 cout << "ERROR::SHADER_COMPILATION_ERROR of type: " << type << endl
-                     << infoLog << "-- -------------------------------------------------- --" << endl;
+                     << infoLog << endl << "-- -------------------------------------------------- --" << endl;
             }
         }
         else
@@ -35,8 +36,9 @@ private:
             glGetProgramiv(shader, GL_LINK_STATUS, &success);
             if (!success)
             {
+                glGetShaderInfoLog(shader, 1024, NULL, infoLog);
                 cout << "ERROR::PROGRAM_LINKING_ERROR of type: " << type << endl
-                     << infoLog << "-- --------------------------------------------------- --" << endl;
+                     << infoLog << endl << "-- --------------------------------------------------- --" << endl;
             }
         }
     }

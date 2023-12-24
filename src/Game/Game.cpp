@@ -36,17 +36,17 @@ void Game::init()
     projection = glm::perspective(glm::radians(45.0f), (float)WIDTH / (float)HEIGHT, 0.1f, 500.0f);
     scene = Scene(projection);
 
-    shader = Shader("./resources/lightVertexShader.glsl", "./resources/lightFragmentShader.glsl");
+    shader = Shader("./resources/lightVertexShader.glsl", "./resources/textureFragmentShader.glsl");
 
     shader.use();
 
     cube->createVertexArray();
     cube->transformMesh(vec3(0), vec3(1), vec3(1), 0);
 
-    /* texture = Texture("resources/textures/woddenContainer.jpg", cube->getTextureCoords()); */
-    /* texture.createTexture(); */
-    /* cube->attachTexture(texture); */
-    /* shader.setInt("ourTexture", texture.getId()); */
+    texture = Texture("resources/textures/woddenContainer.jpg", cube->getTextureCoords());
+    texture.createTexture();
+    cube->attachTexture(texture);
+    shader.setInt("ourTexture", texture.getId());
 
     camera.setCameraPosition(vec3(0, 0, 4));
 
@@ -87,7 +87,7 @@ void Game::processInput(float deltaTime, Window window)
         auto pos = camera.getCameraPosition() + cameraVelocity * camera.getCameraUp();
         camera.moveCamera(pos);
     }
-    if (glfwGetKey(window.getWindow(), GLFW_KEY_LEFT_CONTROL)  == GLFW_PRESS)
+    if (glfwGetKey(window.getWindow(), GLFW_KEY_LEFT_SHIFT)  == GLFW_PRESS)
     {
         auto pos = camera.getCameraPosition() - cameraVelocity * camera.getCameraUp();
         camera.moveCamera(pos);
