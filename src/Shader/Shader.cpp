@@ -80,12 +80,12 @@ void Shader::setBool(const string &name, bool value)
     glUniform1i(glGetUniformLocation(this->getId(), name.c_str()), (int)value);
 }
 
-void Shader::setInt(const string &name, bool value)
+void Shader::setInt(const string &name, int value)
 {
     glUniform1i(glGetUniformLocation(this->getId(), name.c_str()), value);
 }
 
-void Shader::setFloat(const string &name, bool value)
+void Shader::setFloat(const string &name, float value)
 {
     glUniform1f(glGetUniformLocation(this->getId(), name.c_str()), value);
 }

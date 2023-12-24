@@ -46,9 +46,7 @@ void Game::init()
     /* texture = Texture("resources/textures/woddenContainer.jpg", cube->getTextureCoords()); */
     /* texture.createTexture(); */
     /* cube->attachTexture(texture); */
-    /* shader.setInt("ourTexture", 0); */
-    shader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
-    shader.setVec3("lightPos", 1.2f, 1.0f, 2.0f);
+    /* shader.setInt("ourTexture", texture.getId()); */
 
     camera.setCameraPosition(vec3(0, 0, 4));
 
@@ -84,12 +82,12 @@ void Game::processInput(float deltaTime, Window window)
         pos += glm::normalize(glm::cross(camera.getCameraFront(), camera.getCameraUp())) * cameraVelocity;
         camera.moveCamera(pos);
     }
-    if (glfwGetKey(window.getWindow(), GLFW_KEY_E) == GLFW_PRESS)
+    if (glfwGetKey(window.getWindow(), GLFW_KEY_SPACE) == GLFW_PRESS)
     {
         auto pos = camera.getCameraPosition() + cameraVelocity * camera.getCameraUp();
         camera.moveCamera(pos);
     }
-    if (glfwGetKey(window.getWindow(), GLFW_KEY_Q) == GLFW_PRESS)
+    if (glfwGetKey(window.getWindow(), GLFW_KEY_LEFT_CONTROL)  == GLFW_PRESS)
     {
         auto pos = camera.getCameraPosition() - cameraVelocity * camera.getCameraUp();
         camera.moveCamera(pos);
@@ -103,6 +101,22 @@ void Game::update(float deltaTime)
     auto viewLoc = glGetUniformLocation(shader.getId(), "view");
     glUniformMatrix4fv(viewLoc, 1, GL_FALSE, value_ptr(camera.getViewMatrix()));
     
+    shader.setVec3("light.position", 1.2, 1.0, 2.0);
+    shader.setVec3("viewPos", camera.getCameraPosition());
+
+    vec3 lightColor = vec3(1);
+    vec3 diffuseColor = lightColor * vec3(0.5);
+    vec3 ambientColor = diffuseColor * vec3 (0.2);
+
+    shader.setVec3("light.ambient", ambientColor);
+    shader.setVec3("light.diffuse", diffuseColor);
+    shader.setVec3("light.specular", lightColor);
+
+    shader.setVec3("material.ambient", 1.0f, 0.5f, 0.31f);
+    shader.setVec3("material.diffuse", 1.0f, 0.5f, 0.31f);
+    shader.setVec3("material.specular", 0.5f, 0.5f, 0.5f); // specular lighting doesn't have full effect on this object's material
+    shader.setFloat("material.shininess", 32.0f);
+
     /* cube->transformMesh(vec3(0), vec3(1), vec3(0, 1, 0), 30 * deltaTime); */
 }
 

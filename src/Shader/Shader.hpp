@@ -63,8 +63,8 @@ public:
     //---List of method for uniform values---
 
     void setBool(const string &name, bool value);
-    void setInt(const string &name, bool value);
-    void setFloat(const string &name, bool value);
+    void setInt(const string &name, int value);
+    void setFloat(const string &name, float value);
     void setVec2(const string &name, const vec2 &value);
     void setVec2(const string &name, float x, float y);
     void setVec3(const string &name, const vec3 &value);

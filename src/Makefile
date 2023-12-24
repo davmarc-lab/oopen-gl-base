@@ -10,6 +10,8 @@ gameh = ./Game/Game.cpp
 win = ./Window/Window.cpp
 winh = ./Window/Window.hpp
 intsh = ./Shape/Mesh.hpp
+material = ./Shape/Materials/Material.cpp
+materialh = ./Shape/Materials/Material.hpp
 transf = ./Shape/Model/Transform.cpp
 transfh = ./Shape/Model/Transform.hpp
 texture = ./Shape/Textures/Texture.cpp
@@ -20,10 +22,6 @@ scene = ./Scene/Scene.cpp
 sceneh = ./Scene/Scene.hpp
 shader = ./Shader/Shader.cpp
 shaderh = ./Shader/Shader.hpp
-herm = ./Math/Hermite.cpp
-hermh = ./Math/Hermite.hpp
-curve = ./Shape/Curve.cpp
-curveh = ./Shape/Curve.hpp
 libh = Lib.hpp
 imageh = ./include/texture/stb_image.hpp
 util = ./Utils/utils.cpp
@@ -40,8 +38,8 @@ opengl.o: main.cpp ${imageh} ${libh}
 	gcc -c ${FLAGS} main.cpp -o opengl.o
 ###---END---###
 
-main.exe: main.o window.o camera.o shader.o scene.o game.o transf.o texture.o cube.o glad.o
-	g++ ${FLAGS} -o main.exe main.o window.o camera.o transf.o texture.o cube.o game.o glad.o shader.o scene.o ${LIBS}
+main.exe: main.o window.o camera.o shader.o scene.o game.o material.o transf.o texture.o cube.o glad.o
+	g++ ${FLAGS} -o main.exe main.o window.o camera.o material.o transf.o texture.o cube.o game.o glad.o shader.o scene.o ${LIBS}
 
 main.o: main.cpp ${gladh} ${libh} ${intsh} ${gameh}
 	gcc -c ${FLAGS} main.cpp -o main.o
@@ -54,6 +52,9 @@ camera.o: ${camera} ${camerah} ${libh}
 
 shape.o: ${shape} ${shapeh} ${libh} ${gladh} ${intsh} ${shaderh}
 	gcc -c ${FLAGS} ${shape} -o shape.o
+
+material.o: ${material} ${materialh} ${libh}
+	gcc -c ${FLAGS} ${material} -o material.o
 
 transf.o: ${transf} ${transfh} ${libh}
 	gcc -c ${FLAGS} ${transf} -o transf.o
@@ -70,11 +71,8 @@ shader.o: ${shader} ${shaderh} ${shapeh} ${gladh}
 scene.o: ${scene} ${sceneh} ${libh} ${gladh}
 	gcc -c ${FLAGS} ${scene} -o scene.o
 
-cube.o: ${cube} ${cubeh} ${libh} ${gladh} ${intsh} ${shaderh}
+cube.o: ${cube} ${cubeh} ${libh} ${gladh} ${intsh} ${shaderh} ${materialh}
 	gcc -c ${FLAGS} ${cube} -o cube.o
-
-curve.o: ${curve} ${curveh} ${libh} ${gladh} ${intsh} ${shaderh}
-	gcc -c ${FLAGS} ${curve} -o curve.o
 
 helper.o: ${util} ${utilh}
 	gcc -c ${FLAGS} ${util} -o helper.o
