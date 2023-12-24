@@ -26,7 +26,7 @@ Game::Game(unsigned int width, unsigned int height)
 
 mat4 projection;
 Scene scene;
-Mesh* cube = new Cube(color::BLACK);
+Mesh* cube = new Cube(color::BLUE);
 Camera camera = Camera();
 Shader shader;
 Texture texture;
@@ -43,14 +43,12 @@ void Game::init()
     cube->createVertexArray();
     cube->transformMesh(vec3(0), vec3(1), vec3(1), 0);
 
-    texture = Texture("resources/textures/woddenContainer.jpg", cube->getTextureCoords());
+    /* texture = Texture("resources/textures/woddenContainer.jpg", cube->getTextureCoords()); */
     /* texture.createTexture(); */
     /* cube->attachTexture(texture); */
     /* shader.setInt("ourTexture", 0); */
-    shader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
     shader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
-    shader.setVec3("lightPos", 3, 1, 0);
-
+    shader.setVec3("lightPos", 1.2f, 1.0f, 2.0f);
 
     camera.setCameraPosition(vec3(0, 0, 4));
 

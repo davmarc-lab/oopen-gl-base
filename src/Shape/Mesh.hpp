@@ -24,12 +24,16 @@ class Mesh
         GLuint vbo_c;
         // VBO buffer used for texCoords.
         GLuint vbo_t;
+        // VBO buffer used for normals.
+        GLuint vbo_n;        
         // Vector of all vertices of the shape.
         vector<vec3> vertex;
         // Vector of all color for each vertex.
         vector<vec4> colors;
         // Vector of TexCoords.
         vector<vec2> texCoord;
+        // Vector of normal vectors for each vertex.
+        vector<vec3> normal;
         // The primary color of the shape.
         Color color;
         // The center vertex color of the shape.
@@ -42,10 +46,8 @@ class Mesh
         int nvertex = 0;
         // Number of triangles of the shape.
         int ntriangle = 0;
-
         // Says if the shape is solid or not
         bool isSolid = false;
-
         // Says if the shape is destroyed or alive
         bool isDestroyed = false;
 
@@ -68,8 +70,14 @@ class Mesh
 
         // This method sets the number of triangles of the shape.
         void setTriangleNum(int n) { this->ntriangle = n; }
+    
+        void setTextureCoords(vector<vec2> coords) { this->texCoord = coords; }
 
         vector<vec2> getTextureCoords() { return this->texCoord; }
+
+        void setNormalVector(vector<vec3> normal) { this->normal = normal; }
+        
+        vector<vec3> getNormalVector() { return this->normal; }
 
         // This method sets the primary color of the shape.
         void setColor(Color color) { this->color = color; }

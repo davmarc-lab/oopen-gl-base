@@ -5,55 +5,57 @@
 void Cube::buildCube()
 {
     float vertices[] = {
-        -1.0f, -1.0f, -1.0f,  0.0f, 0.0f,
-         1.0f, -1.0f, -1.0f,  1.0f, 0.0f,
-         1.0f,  1.0f, -1.0f,  1.0f, 1.0f,
-         1.0f,  1.0f, -1.0f,  1.0f, 1.0f,
-        -1.0f,  1.0f, -1.0f,  0.0f, 1.0f,
-        -1.0f, -1.0f, -1.0f,  0.0f, 0.0f,
+        // vertex coord,   texture coord,  normal vectors
+        -1.0f, -1.0f, -1.0f,  0.0f, 0.0f, 0.0f, 0.0f, -1.0f,
+         1.0f, -1.0f, -1.0f,  1.0f, 0.0f, 0.0f, 0.0f, -1.0f,
+         1.0f,  1.0f, -1.0f,  1.0f, 1.0f, 0.0f, 0.0f, -1.0f,
+         1.0f,  1.0f, -1.0f,  1.0f, 1.0f, 0.0f, 0.0f, -1.0f,
+        -1.0f,  1.0f, -1.0f,  0.0f, 1.0f, 0.0f, 0.0f, -1.0f,
+        -1.0f, -1.0f, -1.0f,  0.0f, 0.0f, 0.0f, 0.0f, -1.0f,
 
-        -1.0f, -1.0f,  1.0f,  0.0f, 0.0f,
-         1.0f, -1.0f,  1.0f,  1.0f, 0.0f,
-         1.0f,  1.0f,  1.0f,  1.0f, 1.0f,
-         1.0f,  1.0f,  1.0f,  1.0f, 1.0f,
-        -1.0f,  1.0f,  1.0f,  0.0f, 1.0f,
-        -1.0f, -1.0f,  1.0f,  0.0f, 0.0f,
+        -1.0f, -1.0f,  1.0f,  0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+         1.0f, -1.0f,  1.0f,  1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+         1.0f,  1.0f,  1.0f,  1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+         1.0f,  1.0f,  1.0f,  1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+        -1.0f,  1.0f,  1.0f,  0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+        -1.0f, -1.0f,  1.0f,  0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
 
-        -1.0f,  1.0f,  1.0f,  1.0f, 0.0f,
-        -1.0f,  1.0f, -1.0f,  1.0f, 1.0f,
-        -1.0f, -1.0f, -1.0f,  0.0f, 1.0f,
-        -1.0f, -1.0f, -1.0f,  0.0f, 1.0f,
-        -1.0f, -1.0f,  1.0f,  0.0f, 0.0f,
-        -1.0f,  1.0f,  1.0f,  1.0f, 0.0f,
+        -1.0f,  1.0f,  1.0f,  1.0f, 0.0f, -1.0f, 0.0f, 0.0f,
+        -1.0f,  1.0f, -1.0f,  1.0f, 1.0f, -1.0f, 0.0f, 0.0f,
+        -1.0f, -1.0f, -1.0f,  0.0f, 1.0f, -1.0f, 0.0f, 0.0f,
+        -1.0f, -1.0f, -1.0f,  0.0f, 1.0f, -1.0f, 0.0f, 0.0f,
+        -1.0f, -1.0f,  1.0f,  0.0f, 0.0f, -1.0f, 0.0f, 0.0f,
+        -1.0f,  1.0f,  1.0f,  1.0f, 0.0f, -1.0f, 0.0f, 0.0f,
 
-         1.0f,  1.0f,  1.0f,  1.0f, 0.0f,
-         1.0f,  1.0f, -1.0f,  1.0f, 1.0f,
-         1.0f, -1.0f, -1.0f,  0.0f, 1.0f,
-         1.0f, -1.0f, -1.0f,  0.0f, 1.0f,
-         1.0f, -1.0f,  1.0f,  0.0f, 0.0f,
-         1.0f,  1.0f,  1.0f,  1.0f, 0.0f,
+         1.0f,  1.0f,  1.0f,  1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+         1.0f,  1.0f, -1.0f,  1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+         1.0f, -1.0f, -1.0f,  0.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+         1.0f, -1.0f, -1.0f,  0.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+         1.0f, -1.0f,  1.0f,  0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+         1.0f,  1.0f,  1.0f,  1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
 
-        -1.0f, -1.0f, -1.0f,  0.0f, 1.0f,
-         1.0f, -1.0f, -1.0f,  1.0f, 1.0f,
-         1.0f, -1.0f,  1.0f,  1.0f, 0.0f,
-         1.0f, -1.0f,  1.0f,  1.0f, 0.0f,
-        -1.0f, -1.0f,  1.0f,  0.0f, 0.0f,
-        -1.0f, -1.0f, -1.0f,  0.0f, 1.0f,
+        -1.0f, -1.0f, -1.0f,  0.0f, 1.0f, 0.0f, -1.0f, 0.0f,
+         1.0f, -1.0f, -1.0f,  1.0f, 1.0f, 0.0f, -1.0f, 0.0f,
+         1.0f, -1.0f,  1.0f,  1.0f, 0.0f, 0.0f, -1.0f, 0.0f,
+         1.0f, -1.0f,  1.0f,  1.0f, 0.0f, 0.0f, -1.0f, 0.0f,
+        -1.0f, -1.0f,  1.0f,  0.0f, 0.0f, 0.0f, -1.0f, 0.0f,
+        -1.0f, -1.0f, -1.0f,  0.0f, 1.0f, 0.0f, -1.0f, 0.0f,
 
-        -1.0f,  1.0f, -1.0f,  0.0f, 1.0f,
-         1.0f,  1.0f, -1.0f,  1.0f, 1.0f,
-         1.0f,  1.0f,  1.0f,  1.0f, 0.0f,
-         1.0f,  1.0f,  1.0f,  1.0f, 0.0f,
-        -1.0f,  1.0f,  1.0f,  0.0f, 0.0f,
-        -1.0f,  1.0f, -1.0f,  0.0f, 1.0f
+        -1.0f,  1.0f, -1.0f,  0.0f, 1.0f, 0.0f, 1.0f, 0.0f,
+         1.0f,  1.0f, -1.0f,  1.0f, 1.0f, 0.0f, 1.0f, 0.0f,
+         1.0f,  1.0f,  1.0f,  1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+         1.0f,  1.0f,  1.0f,  1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+        -1.0f,  1.0f,  1.0f,  0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+        -1.0f,  1.0f, -1.0f,  0.0f, 1.0f, 0.0f, 1.0f, 0.0f
     };
 
     int size = sizeof(vertices) / sizeof(float);
-    for (int i = 0; i < size; i+=5)
+    for (int i = 0; i < size; i+=8)
     {
         this->vertex.push_back(vec3(vertices[i], vertices[i+1], vertices[i+2]));
         this->texCoord.push_back(vec2(vertices[i+3], vertices[i+4]));
-        this->colors.push_back(vec4(0, 0, 0, 1));
+        this->normal.push_back(vec3(vertices[i+5], vertices[i+6], vertices[i+7]));
+        this->colors.push_back(this->color.getColorVector());
     }
 }
 
@@ -84,6 +86,14 @@ void Cube::createVertexArray()
 
     glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, (void*)0);
     glEnableVertexAttribArray(1);
+
+    // vbo normals
+    glGenBuffers(1, &this->vbo_n);
+    glBindBuffer(GL_ARRAY_BUFFER, this->vbo_n);
+    glBufferData(GL_ARRAY_BUFFER, this->normal.size() * sizeof(vec3), this->normal.data(), GL_STATIC_DRAW);
+    
+    glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+    glEnableVertexAttribArray(3);
     
 }
 
