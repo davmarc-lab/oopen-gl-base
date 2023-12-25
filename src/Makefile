@@ -5,6 +5,9 @@ glad = ./include/glad/glad.c
 gladh = ./include/glad/glad.h
 camera = ./Camera/Camera.cpp
 camerah = ./Camera/Camera.hpp
+lighth = ./Light/Light.hpp
+dl = ./Light/DirectionalLight.cpp
+dlh = ./Light/DirectionalLight.hpp
 game = ./Game/Game.cpp
 gameh = ./Game/Game.cpp
 win = ./Window/Window.cpp
@@ -38,8 +41,8 @@ opengl.o: main.cpp ${imageh} ${libh}
 	gcc -c ${FLAGS} main.cpp -o opengl.o
 ###---END---###
 
-main.exe: main.o window.o camera.o shader.o scene.o game.o material.o transf.o texture.o cube.o glad.o
-	g++ ${FLAGS} -o main.exe main.o window.o camera.o material.o transf.o texture.o cube.o game.o glad.o shader.o scene.o ${LIBS}
+main.exe: main.o window.o camera.o shader.o scene.o game.o material.o dl.o transf.o texture.o cube.o glad.o
+	g++ ${FLAGS} -o main.exe main.o window.o camera.o material.o dl.o transf.o texture.o cube.o game.o glad.o shader.o scene.o ${LIBS}
 
 main.o: main.cpp ${gladh} ${libh} ${intsh} ${gameh}
 	gcc -c ${FLAGS} main.cpp -o main.o
@@ -49,6 +52,9 @@ window.o: ${win} ${winh} ${libh} ${gladh}
 
 camera.o: ${camera} ${camerah} ${libh}
 	gcc -c ${FLAGS} ${camera} -o camera.o
+
+dl.o: ${dl} ${dlh} ${libh} ${lighth}
+	gcc -c ${FLAGS} ${dl} -o dl.o
 
 shape.o: ${shape} ${shapeh} ${libh} ${gladh} ${intsh} ${shaderh}
 	gcc -c ${FLAGS} ${shape} -o shape.o

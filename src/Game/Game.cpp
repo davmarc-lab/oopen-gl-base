@@ -13,6 +13,7 @@
 #include "../Shape/Mesh.hpp"
 #include "../Shape/Cube.hpp"
 #include "../Scene/Scene.hpp"
+#include "../Light/DirectionalLight.hpp"
 
 Game::Game(unsigned int width, unsigned int height)
 {
@@ -36,7 +37,7 @@ void Game::init()
     projection = glm::perspective(glm::radians(45.0f), (float)WIDTH / (float)HEIGHT, 0.1f, 500.0f);
     scene = Scene(projection);
 
-    shader = Shader("./resources/lightVertexShader.glsl", "./resources/textureFragmentShader.glsl");
+    shader = Shader("./resources/lightVertexShader.glsl", "./resources/lightFragmentShader.glsl");
 
     shader.use();
 
@@ -100,31 +101,27 @@ void Game::update(float deltaTime)
 {
     auto viewLoc = glGetUniformLocation(shader.getId(), "view");
     glUniformMatrix4fv(viewLoc, 1, GL_FALSE, value_ptr(camera.getViewMatrix()));
-    
-    shader.setVec3("light.position", 1.2, 1.0, 2.0);
+    shader.setInt("material.diffuse", texture.getId()); 
     shader.setVec3("viewPos", camera.getCameraPosition());
-
-    vec3 lightColor = vec3(1);
-    vec3 diffuseColor = lightColor * vec3(0.5);
-    vec3 ambientColor = diffuseColor * vec3 (0.2);
-
-    shader.setVec3("light.ambient", ambientColor);
-    shader.setVec3("light.diffuse", diffuseColor);
-    shader.setVec3("light.specular", lightColor);
 
     shader.setVec3("material.ambient", 1.0f, 0.5f, 0.31f);
     shader.setVec3("material.diffuse", 1.0f, 0.5f, 0.31f);
     shader.setVec3("material.specular", 0.5f, 0.5f, 0.5f); // specular lighting doesn't have full effect on this object's material
     shader.setFloat("material.shininess", 32.0f);
 
-    /* cube->transformMesh(vec3(0), vec3(1), vec3(0, 1, 0), 30 * deltaTime); */
+    cube->transformMesh(vec3(0), vec3(1), vec3(0, 1, 0), 30 * deltaTime);
 }
 
 void Game::render()
 {
-    /* glBindTexture(GL_TEXTURE_2D, texture.getId()); */
+    glBindTexture(GL_TEXTURE_2D, texture.getId());
+    shader.setInt("ourTexture", texture.getId());
+    DirectionalLight dl = DirectionalLight(vec3(0.2f, 0.2f, 0.2f),
+            vec3(0.5f, 0.5f, 0.5f),
+            vec3(1.0f, 1.0f, 1.0f),
+            vec3(1, 0, 0));
+    dl.drawLight(shader);
     scene.drawScene();
-    /* shader.setInt("ourTexture", texture.getId()); */
 }
 
 void Game::clear()
