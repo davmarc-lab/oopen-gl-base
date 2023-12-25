@@ -13,7 +13,7 @@
 #include "../Shape/Mesh.hpp"
 #include "../Shape/Cube.hpp"
 #include "../Scene/Scene.hpp"
-#include "../Light/PointLight.hpp"
+#include "../Light/SpotLight.hpp"
 
 Game::Game(unsigned int width, unsigned int height)
 {
@@ -101,12 +101,11 @@ void Game::update(float deltaTime)
 {
     auto viewLoc = glGetUniformLocation(shader.getId(), "view");
     glUniformMatrix4fv(viewLoc, 1, GL_FALSE, value_ptr(camera.getViewMatrix()));
+    shader.use();
+
     shader.setInt("material.diffuse", texture.getId()); 
     shader.setVec3("viewPos", camera.getCameraPosition());
 
-    shader.setVec3("material.ambient", 1.0f, 0.5f, 0.31f);
-    shader.setVec3("material.diffuse", 1.0f, 0.5f, 0.31f);
-    shader.setVec3("material.specular", 0.5f, 0.5f, 0.5f); // specular lighting doesn't have full effect on this object's material
     shader.setFloat("material.shininess", 32.0f);
 
     cube->transformMesh(vec3(0), vec3(1), vec3(0, 1, 0), 30 * deltaTime);
@@ -116,13 +115,16 @@ void Game::render()
 {
     glBindTexture(GL_TEXTURE_2D, texture.getId());
     shader.setInt("ourTexture", texture.getId());
-    PointLight dl = PointLight(vec3(0, 2, 2.0),
-            1,
-            0.09,
-            0.032);
-    dl.setAmbient(vec3(0.2));
-    dl.setDiffuse(vec3(0.5));
-    dl.setSpecular(vec3(1));
+    SpotLight dl = SpotLight(camera.getCameraPosition(),
+            camera.getCameraFront(),
+            cos(radians(12.5f)));
+    shader.setVec3("light.ambient", 0.1f, 0.1f, 0.1f);
+
+    shader.setVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
+    shader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+    shader.setFloat("light.constant", 1.0f);
+    shader.setFloat("light.linear", 0.09f);
+    shader.setFloat("light.quadratic", 0.032f);
     dl.drawLight(shader);
     scene.drawScene();
 }
