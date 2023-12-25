@@ -13,7 +13,7 @@
 #include "../Shape/Mesh.hpp"
 #include "../Shape/Cube.hpp"
 #include "../Scene/Scene.hpp"
-#include "../Light/DirectionalLight.hpp"
+#include "../Light/PointLight.hpp"
 
 Game::Game(unsigned int width, unsigned int height)
 {
@@ -116,10 +116,13 @@ void Game::render()
 {
     glBindTexture(GL_TEXTURE_2D, texture.getId());
     shader.setInt("ourTexture", texture.getId());
-    DirectionalLight dl = DirectionalLight(vec3(0.2f, 0.2f, 0.2f),
-            vec3(0.5f, 0.5f, 0.5f),
-            vec3(1.0f, 1.0f, 1.0f),
-            vec3(1, 0, 0));
+    PointLight dl = PointLight(vec3(0, 2, 2.0),
+            1,
+            0.09,
+            0.032);
+    dl.setAmbient(vec3(0.2));
+    dl.setDiffuse(vec3(0.5));
+    dl.setSpecular(vec3(1));
     dl.drawLight(shader);
     scene.drawScene();
 }
