@@ -101,10 +101,9 @@ void Game::update(float deltaTime)
 {
     auto viewLoc = glGetUniformLocation(shader.getId(), "view");
     glUniformMatrix4fv(viewLoc, 1, GL_FALSE, value_ptr(camera.getViewMatrix()));
-    shader.use();
-
-    shader.setInt("material.diffuse", texture.getId()); 
     shader.setVec3("viewPos", camera.getCameraPosition());
+
+    shader.setInt("material.diffuse", texture.getId());
 
     shader.setFloat("material.shininess", 32.0f);
 
@@ -117,14 +116,14 @@ void Game::render()
     shader.setInt("ourTexture", texture.getId());
     SpotLight dl = SpotLight(camera.getCameraPosition(),
             camera.getCameraFront(),
-            cos(radians(12.5f)));
-    shader.setVec3("light.ambient", 0.1f, 0.1f, 0.1f);
+            cos(radians(12.0f)));
+    dl.setAmbient(vec3(0.1));
+    dl.setDiffuse(vec3(0.8));
+    dl.setSpecular(vec3(1));
+    dl.setConstantValue(1);
+    dl.setLinearValue(0.09);
+    dl.setQuadraticValue(0.032);
 
-    shader.setVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
-    shader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
-    shader.setFloat("light.constant", 1.0f);
-    shader.setFloat("light.linear", 0.09f);
-    shader.setFloat("light.quadratic", 0.032f);
     dl.drawLight(shader);
     scene.drawScene();
 }

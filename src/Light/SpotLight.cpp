@@ -21,4 +21,8 @@ void SpotLight::drawLight(Shader shader)
     shader.setVec3("light.ambient", this->ambient);
     shader.setVec3("light.diffuse", this->diffuse);
     shader.setVec3("light.specular", this->specular);
+
+    shader.setFloat("light.constant", this->constant);
+    shader.setFloat("light.linear", this->linear);
+    shader.setFloat("light.quadratic", this->quadratic); 
 }
