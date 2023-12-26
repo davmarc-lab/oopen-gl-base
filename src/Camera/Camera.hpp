@@ -2,26 +2,49 @@
 
 #include "../Lib.hpp"
 
+const float YAW = -90.0f;
+const float PITCH = 0.0f;
+const float SPEED = 2.5f;
+const float SENSITIVITY = 0.1f;
+const float ZOOM = 45.0f;
+
 class Camera
 {
     private:
-        mat4 view = mat4(1.0f);
-        vec3 cameraPos = vec3(0, 0, 3);
+        vec3 cameraPos = vec3(0);
         vec3 cameraFront = vec3(0, 0, -1);
         vec3 cameraUp = vec3(0, 1, 0);
-        vec3 rotation = vec3(0);
+        vec3 cameraRight = vec3(1, 0, 0);
+        vec3 worldUp = vec3(0, 1, 0);
+        vec3 rotation;
+        float cameraSpeed = SPEED;
+        float mouseSensitivity = SENSITIVITY;
+        float cameraZoom = ZOOM;
 
-    public:
-        Camera()
+        float yaw = YAW;
+        float pitch = PITCH;
+
+        void updateCameraVectors()
         {
-            this->view = glm::lookAt(this->cameraPos,
-                    this->cameraPos + this->cameraFront,
-                    this->cameraUp);
+            vec3 front;
+            front.x = cos(radians(this->yaw)) * cos(radians(this->pitch));
+            front.y = -sin(radians(this->pitch));
+            front.z = sin(radians(this->yaw)) * cos(radians(this->pitch));
+
+            this->cameraFront = normalize(front);
+            this->cameraRight = normalize(cross(this->cameraFront, this->worldUp));
+            this->cameraUp = normalize(cross(this->cameraRight, this->cameraFront));
         }
 
-        void setViewMatrix(mat4 mat) { this->view = mat; }
+    public:
+        Camera() 
+        {
+            /* this->updateCameraVectors(); */
+        }
 
-        mat4 getViewMatrix() { return this->view; }
+        mat4 getViewMatrix() { return glm::lookAt(this->cameraPos,
+                this->cameraPos + this->cameraFront,
+                this->cameraUp); }
 
         void setCameraFront(vec3 vec) { this->cameraFront = vec; }
 
@@ -29,13 +52,13 @@ class Camera
 
         vec3 getCameraUp() { return this->cameraUp; }
 
-        // This method reset the view matrix, use only for setup.
-        // If you want to move the camera use the moveCamera method.
-        void setCameraPosition(vec3 pos);
+        vec3 getCameraRight() { return this->cameraRight; }
 
         vec3 getCameraPosition() { return this->cameraPos; }
 
         void moveCamera(vec3 position);
+
+        void processMouseMovement(float xoffset, float yoffset, bool constrainPitch = true);
 
         void rotateCamera(vec3 rotationAxis, float rotationValue);
 };

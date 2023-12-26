@@ -2,7 +2,9 @@
 
 #include <GLFW/glfw3.h>
 #include <glm/ext/matrix_transform.hpp>
+#include <glm/gtx/dual_quaternion.hpp>
 #include <glm/gtx/string_cast.hpp>
+#include <glm/trigonometric.hpp>
 #include <iostream>
 #include <thread>
 
@@ -32,8 +34,38 @@ Camera camera = Camera();
 Shader shader;
 Texture texture;
 
-void Game::init()
+struct Mouse
 {
+    bool firstMouse = true;
+    float lastX;
+    float lastY;
+} mouse;
+
+void mouseMovementCallback(double xposIn, double yposIn)
+{
+    float xpos = static_cast<float>(xposIn);
+    float ypos = static_cast<float>(yposIn);
+    
+    if (mouse.firstMouse)
+    {
+        mouse.firstMouse = false;
+        mouse.lastX = xpos;
+        mouse.lastY = ypos;
+    }
+
+    float xoffset = xpos - mouse.lastX;
+    float yoffset = ypos - mouse.lastY;
+
+    mouse.lastX = xpos;
+    mouse.lastY = ypos;
+
+    camera.processMouseMovement(xoffset, yoffset);
+}
+
+void Game::init(Window* window)
+{
+    mouse.lastX = window->getResolution().x;
+    mouse.lastY = window->getResolution().y / 2;
     projection = glm::perspective(glm::radians(45.0f), (float)WIDTH / (float)HEIGHT, 0.1f, 500.0f);
     scene = Scene(projection);
 
@@ -49,9 +81,13 @@ void Game::init()
     cube->attachTexture(texture);
     shader.setInt("ourTexture", texture.getId());
 
-    camera.setCameraPosition(vec3(0, 0, 4));
+    camera.moveCamera(vec3(0, 0, 4));
 
     scene.addShape2dToScene(cube, shader);
+
+    // sets the mouse callback function
+    glfwSetInputMode(window->getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    glfwSetCursorPos(window->getWindow(), mouse.lastX, mouse.lastY);
 
     this->state = GAME_ACTIVE;
 }
@@ -73,14 +109,12 @@ void Game::processInput(float deltaTime, Window window)
     }
     if (glfwGetKey(window.getWindow(), GLFW_KEY_A) == GLFW_PRESS)
     {
-        auto pos = camera.getCameraPosition();
-        pos -= glm::normalize(glm::cross(camera.getCameraFront(), camera.getCameraUp())) * cameraVelocity;
+        auto pos = camera.getCameraPosition() - cameraVelocity * camera.getCameraRight();
         camera.moveCamera(pos);
     }
     if (glfwGetKey(window.getWindow(), GLFW_KEY_D) == GLFW_PRESS)
     {
-        auto pos = camera.getCameraPosition();
-        pos += glm::normalize(glm::cross(camera.getCameraFront(), camera.getCameraUp())) * cameraVelocity;
+        auto pos = camera.getCameraPosition() + cameraVelocity * camera.getCameraRight();
         camera.moveCamera(pos);
     }
     if (glfwGetKey(window.getWindow(), GLFW_KEY_SPACE) == GLFW_PRESS)
@@ -93,6 +127,10 @@ void Game::processInput(float deltaTime, Window window)
         auto pos = camera.getCameraPosition() - cameraVelocity * camera.getCameraUp();
         camera.moveCamera(pos);
     }
+
+    double xpos, ypos;
+    glfwGetCursorPos(window.getWindow(), &xpos, &ypos);
+    mouseMovementCallback(xpos, ypos);
 }
 
 static float rotval = 0;

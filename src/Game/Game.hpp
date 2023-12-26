@@ -19,7 +19,7 @@ class Game
         
         Game(unsigned int width, unsigned int height);
 
-        void init();
+        void init(Window* window);
         
         void processInput(float deltaTime, Window window);
         

@@ -17,7 +17,7 @@ int main()
     Window window = Window(GAME_NAME, WIDTH, HEIGHT);
 
     // Initialize all game object and window
-    game.init();
+    game.init(&window);
 
     // time variables
     float deltaTime = 0.0f;
