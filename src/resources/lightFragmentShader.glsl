@@ -22,6 +22,8 @@ struct Light {
     float quadratic;
 
     float cutOff;
+    float outerCutOff;
+    bool isSmooth;
 };
 
 in vec4 vertexColor;
@@ -70,6 +72,17 @@ vec3 execPhongAlgorithm()
     vec3 reflectDir = reflect(-lightDir, norm);  
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
     vec3 specular = light.specular * spec * texture(material.specular, TexCoord).rgb;  
+
+    // smooth spotlight
+    if (light.isSmooth == true)
+    {
+        float theta = dot(lightDir, normalize(-light.direction));
+        float epsilon = (light.cutOff - light.outerCutOff);
+        float intensity = clamp((theta - light.outerCutOff) / epsilon, 0.0, 1.0);
+
+        diffuse *= intensity;
+        specular *= intensity;
+    }
 
     // calculating a pointlight || spotlight
     if (lightType == 1 || lightType == 2)

@@ -116,13 +116,15 @@ void Game::render()
     shader.setInt("ourTexture", texture.getId());
     SpotLight dl = SpotLight(camera.getCameraPosition(),
             camera.getCameraFront(),
-            cos(radians(12.0f)));
+            cos(radians(12.5f)),
+            cos(radians(15.5f)));
     dl.setAmbient(vec3(0.1));
     dl.setDiffuse(vec3(0.8));
     dl.setSpecular(vec3(1));
     dl.setConstantValue(1);
     dl.setLinearValue(0.09);
     dl.setQuadraticValue(0.032);
+    dl.setSmooth(true);
 
     dl.drawLight(shader);
     scene.drawScene();

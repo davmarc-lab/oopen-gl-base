@@ -8,12 +8,15 @@ class SpotLight : public Light
         vec3 position;
         vec3 direction;
         float cutOff;
+        float outerCutOff;
         float constant;
         float linear;
         float quadratic;
 
+        bool smooth = false;
+
     public:
-        SpotLight(vec3 position, vec3 direction, float cutOff);
+        SpotLight(vec3 position, vec3 direction, float cutOff, float outerCutOff);
 
         vec3 getPosition() { return this->position; }
 
@@ -25,7 +28,11 @@ class SpotLight : public Light
 
         float getCutOffValue() { return this->cutOff; }
 
-        void setCutOffValue(float value) { this->cutOff = value; }
+        void setCutOffValue(float value) { this->outerCutOff = value; }
+
+        float getOuterCutOffValue() { return this->cutOff; }
+
+        void setOuterCutOffValue(float value) { this->outerCutOff = value; }
 
         float getConstantValue() { return this->constant; }
 
@@ -38,6 +45,10 @@ class SpotLight : public Light
         float getQuadraticValue() { return this->quadratic; }
 
         void setQuadraticValue(float value) { this->quadratic = value; }
+
+        void setSmooth(bool value) { this->smooth = value; }
+
+        bool isSmooth() { return this->smooth; }
 
         virtual void drawLight(Shader shader) override;
 };

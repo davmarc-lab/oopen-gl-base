@@ -11,7 +11,6 @@ class Cube : public Mesh
     private:
         GLuint ebo;
         vector<int> indices;
-        Color color;
         
         void buildCube();
 
