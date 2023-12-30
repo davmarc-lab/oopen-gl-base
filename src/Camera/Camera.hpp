@@ -39,7 +39,7 @@ class Camera
     public:
         Camera() 
         {
-            /* this->updateCameraVectors(); */
+            this->updateCameraVectors();
         }
 
         mat4 getViewMatrix() { return glm::lookAt(this->cameraPos,
@@ -55,6 +55,10 @@ class Camera
         vec3 getCameraRight() { return this->cameraRight; }
 
         vec3 getCameraPosition() { return this->cameraPos; }
+
+        float getMouseSensitivity() { return this->mouseSensitivity; }
+
+        void setMouseSensitivity(float val) { this->mouseSensitivity = val; }
 
         void moveCamera(vec3 position);
 

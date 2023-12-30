@@ -41,7 +41,7 @@ struct Mouse
     float lastY;
 } mouse;
 
-void mouseMovementCallback(double xposIn, double yposIn)
+void mouseMovementCallback(GLFWwindow *window, double xposIn, double yposIn)
 {
     float xpos = static_cast<float>(xposIn);
     float ypos = static_cast<float>(yposIn);
@@ -64,8 +64,6 @@ void mouseMovementCallback(double xposIn, double yposIn)
 
 void Game::init(Window* window)
 {
-    mouse.lastX = window->getResolution().x;
-    mouse.lastY = window->getResolution().y / 2;
     projection = glm::perspective(glm::radians(45.0f), (float)WIDTH / (float)HEIGHT, 0.1f, 500.0f);
     scene = Scene(projection);
 
@@ -87,7 +85,10 @@ void Game::init(Window* window)
 
     // sets the mouse callback function
     glfwSetInputMode(window->getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-    glfwSetCursorPos(window->getWindow(), mouse.lastX, mouse.lastY);
+    glfwSetCursorPosCallback(window->getWindow(), mouseMovementCallback);
+
+    if (glfwRawMouseMotionSupported())
+        glfwSetInputMode(window->getWindow(), GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
 
     this->state = GAME_ACTIVE;
 }
@@ -127,10 +128,6 @@ void Game::processInput(float deltaTime, Window window)
         auto pos = camera.getCameraPosition() - cameraVelocity * camera.getCameraUp();
         camera.moveCamera(pos);
     }
-
-    double xpos, ypos;
-    glfwGetCursorPos(window.getWindow(), &xpos, &ypos);
-    mouseMovementCallback(xpos, ypos);
 }
 
 static float rotval = 0;
