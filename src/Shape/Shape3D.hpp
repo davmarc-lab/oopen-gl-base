@@ -128,6 +128,8 @@ class Shape3D
 
             glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
             glEnableVertexAttribArray(2);
+
+            glBindVertexArray(0);
         }
 
         void setSolid() { this->isSolid = true; }

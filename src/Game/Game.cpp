@@ -31,7 +31,8 @@ mat4 projection;
 Scene scene;
 Shape3D* cube = new Cube(color::BLUE);
 Camera camera = Camera();
-Shader shader;
+Shader shader, cubeShader;
+Texture texture;
 Model backPack;
 
 struct Mouse
@@ -64,22 +65,26 @@ void mouseMovementCallback(GLFWwindow *window, double xposIn, double yposIn)
 
 void Game::init(Window* window)
 {
-    projection = glm::perspective(glm::radians(45.0f), (float)WIDTH / (float)HEIGHT, 0.1f, 500.0f);
+    projection = glm::perspective(glm::radians(45.0f), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
     scene = Scene(projection);
 
     shader = Shader("./resources/modelVertexShader.glsl", "./resources/modelFragmentShader.glsl");
     shader.use();
     shader.setMat4("projection", projection);
 
-    // Model load test
-    backPack = Model("./resources/models/backpack.obj", Flip::VERTICALLY);
+    cubeShader = Shader("./resources/vertexShader.glsl", "./resources/fragmentShader.glsl");
+    cubeShader.use();
+    cubeShader.setMat4("projection", projection);
 
-    /* cube->createVertexArray(); */
-    /* cube->transformMesh(vec3(0), vec3(1), vec3(1), 0); */
+    // Model load test
+    backPack = Model("./resources/models/Try/First.obj", Flip::VERTICALLY);
+
+    cube->createVertexArray();
+    cube->transformMesh(vec3(0), vec3(0.3f), vec3(1), 0);
 
     camera.moveCamera(vec3(0, 0, 4));
 
-    /* scene.addShape2dToScene(cube, shader); */
+    scene.addShape2dToScene(cube, cubeShader);
 
     // sets the mouse callback function
     glfwSetInputMode(window->getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -132,16 +137,16 @@ static float rotval = 0;
 
 void Game::update(float deltaTime)
 {
+    cubeShader.setMat4("view", camera.getViewMatrix());
     shader.setMat4("view", camera.getViewMatrix());
     shader.setMat4("model", translate(mat4(1.0f), vec3(0)));
-    /* shader.setVec3("viewPos", camera.getCameraPosition()); */
 
-    /* cube->transformMesh(vec3(0), vec3(1), vec3(0, 1, 0), 30 * deltaTime); */
+    cube->transformMesh(vec3(0), vec3(1), vec3(0, 1, 0), 30 * deltaTime);
 }
 
 void Game::render()
 {
-    /* scene.drawScene(); */
+    scene.drawScene();
     backPack.draw(shader);
 }
 
