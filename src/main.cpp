@@ -1,6 +1,6 @@
 ﻿#include "Game/Game.hpp"
 #include "Lib.hpp"
-#include "Shape/Mesh.hpp"
+#include "Shape/Shape3D.hpp"
 #include "Window/Window.hpp"
 
 #include <iostream>

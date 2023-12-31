@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Shape/Mesh.hpp"
+#include "../Shape/Shape3D.hpp"
 
 #include <cstdlib>
 
@@ -17,7 +17,7 @@ class Helper
             this->wheight = res.y;
         }
 
-        static void buildCircle(float cx, float cy, float raggiox, float raggioy, Mesh* fig);
+        static void buildCircle(float cx, float cy, float raggiox, float raggioy, Shape3D* fig);
 
         /*
          * Generates random 2D coordinates by given ranges. If a range is (n, n), it retrieves 

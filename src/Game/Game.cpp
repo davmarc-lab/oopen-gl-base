@@ -12,7 +12,7 @@
 #include "../Color/Color.hpp"
 #include "../Camera/Camera.hpp"
 #include "../Window/Window.hpp"
-#include "../Shape/Mesh.hpp"
+#include "../Shape/Shape3D.hpp"
 #include "../Shape/Cube.hpp"
 #include "../Scene/Scene.hpp"
 #include "../Light/SpotLight.hpp"
@@ -29,7 +29,7 @@ Game::Game(unsigned int width, unsigned int height)
 
 mat4 projection;
 Scene scene;
-Mesh* cube = new Cube(color::BLUE);
+Shape3D* cube = new Cube(color::BLUE);
 Camera camera = Camera();
 Shader shader;
 Texture texture;

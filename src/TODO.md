@@ -9,6 +9,7 @@ List of things to do in the opengl-three-dimension base:
 - [x] Materials
 - [ ] Physics ?
 - [ ] Improve Mesh class (some patterns?) ?
+- [ ] Use imported Mesh using assimp library (TODO TEST TEST TEST TEST TEST TEST TEST)
 - [ ] Basic Mesh (just make a single class for all meshes and build each one using an helper class):
     - [x] Cube
     - [ ] Sphere

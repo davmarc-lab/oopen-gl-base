@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Shape/Mesh.hpp"
+#include "../Shape/Shape3D.hpp"
 #include "../Shader/Shader.hpp"
 #include <algorithm>
 #include <cstddef>
@@ -18,11 +18,11 @@ enum ShapeType
 class Element
 {
     public:
-        Mesh* shape;
+        Shape3D* shape;
         Shader shader;
         ShapeType type;
 
-        Element(Mesh* shape, Shader shader, ShapeType type)
+        Element(Shape3D* shape, Shader shader, ShapeType type)
         {
             this->shape = shape;
             this->shader = shader;
@@ -49,10 +49,10 @@ class Scene
         Scene(mat4 projection);
 
         // Add to the scene a given shape and his shader.
-        void addShape2dToScene(Mesh* shape, Shader shader) { this->shapes.push_back(Element(shape, shader, NONE)); }
+        void addShape2dToScene(Shape3D* shape, Shader shader) { this->shapes.push_back(Element(shape, shader, NONE)); }
 
         // Add to the scene a given shape and his shader.
-        void addShape2dToScene(Mesh* shape, Shader shader, ShapeType type) { this->shapes.push_back(Element(shape, shader, type)); }
+        void addShape2dToScene(Shape3D* shape, Shader shader, ShapeType type) { this->shapes.push_back(Element(shape, shader, type)); }
 
         // Retrieves all the element of the scene in a vector<pair<Mesh*, Shader>>.
         vector<Element> getSceneElements() { return this->shapes; }

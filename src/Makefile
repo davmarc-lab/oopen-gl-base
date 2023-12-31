@@ -1,5 +1,5 @@
 FLAGS = 
-LIBS = -lglfw -lGLU -lGL -lX11 -lfreetype -lXrandr -lpthread -lXi -ldl
+LIBS = -lglfw -lGLU -lGL -lX11 -lfreetype -lassimp -lXrandr -lpthread -lXi -ldl
 
 glad = ./include/glad/glad.c
 gladh = ./include/glad/glad.h
@@ -16,7 +16,7 @@ game = ./Game/Game.cpp
 gameh = ./Game/Game.cpp
 win = ./Window/Window.cpp
 winh = ./Window/Window.hpp
-intsh = ./Shape/Mesh.hpp
+intsh = ./Shape/Shape3D.hpp
 material = ./Shape/Materials/Material.cpp
 materialh = ./Shape/Materials/Material.hpp
 transf = ./Shape/Model/Transform.cpp
