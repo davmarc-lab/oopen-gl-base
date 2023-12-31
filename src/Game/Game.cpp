@@ -6,7 +6,6 @@
 #include <glm/gtx/string_cast.hpp>
 #include <glm/trigonometric.hpp>
 #include <iostream>
-#include <thread>
 
 #include "../Lib.hpp"
 #include "../Color/Color.hpp"
@@ -15,6 +14,7 @@
 #include "../Shape/Shape3D.hpp"
 #include "../Shape/Cube.hpp"
 #include "../Scene/Scene.hpp"
+#include "../Shape/Model.hpp"
 #include "../Light/SpotLight.hpp"
 
 Game::Game(unsigned int width, unsigned int height)
@@ -32,7 +32,7 @@ Scene scene;
 Shape3D* cube = new Cube(color::BLUE);
 Camera camera = Camera();
 Shader shader;
-Texture texture;
+Model backPack;
 
 struct Mouse
 {
@@ -67,21 +67,19 @@ void Game::init(Window* window)
     projection = glm::perspective(glm::radians(45.0f), (float)WIDTH / (float)HEIGHT, 0.1f, 500.0f);
     scene = Scene(projection);
 
-    shader = Shader("./resources/lightVertexShader.glsl", "./resources/lightFragmentShader.glsl");
-
+    shader = Shader("./resources/modelVertexShader.glsl", "./resources/modelFragmentShader.glsl");
     shader.use();
+    shader.setMat4("projection", projection);
 
-    cube->createVertexArray();
-    cube->transformMesh(vec3(0), vec3(1), vec3(1), 0);
+    // Model load test
+    backPack = Model("./resources/models/backpack.obj", Flip::VERTICALLY);
 
-    texture = Texture("resources/textures/woddenContainer.jpg", cube->getTextureCoords());
-    texture.createTexture();
-    cube->attachTexture(texture);
-    shader.setInt("ourTexture", texture.getId());
+    /* cube->createVertexArray(); */
+    /* cube->transformMesh(vec3(0), vec3(1), vec3(1), 0); */
 
     camera.moveCamera(vec3(0, 0, 4));
 
-    scene.addShape2dToScene(cube, shader);
+    /* scene.addShape2dToScene(cube, shader); */
 
     // sets the mouse callback function
     glfwSetInputMode(window->getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -134,35 +132,17 @@ static float rotval = 0;
 
 void Game::update(float deltaTime)
 {
-    auto viewLoc = glGetUniformLocation(shader.getId(), "view");
-    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, value_ptr(camera.getViewMatrix()));
-    shader.setVec3("viewPos", camera.getCameraPosition());
+    shader.setMat4("view", camera.getViewMatrix());
+    shader.setMat4("model", translate(mat4(1.0f), vec3(0)));
+    /* shader.setVec3("viewPos", camera.getCameraPosition()); */
 
-    shader.setInt("material.diffuse", texture.getId());
-
-    shader.setFloat("material.shininess", 32.0f);
-
-    cube->transformMesh(vec3(0), vec3(1), vec3(0, 1, 0), 30 * deltaTime);
+    /* cube->transformMesh(vec3(0), vec3(1), vec3(0, 1, 0), 30 * deltaTime); */
 }
 
 void Game::render()
 {
-    glBindTexture(GL_TEXTURE_2D, texture.getId());
-    shader.setInt("ourTexture", texture.getId());
-    SpotLight dl = SpotLight(camera.getCameraPosition(),
-            camera.getCameraFront(),
-            cos(radians(12.5f)),
-            cos(radians(15.5f)));
-    dl.setAmbient(vec3(0.1));
-    dl.setDiffuse(vec3(0.8));
-    dl.setSpecular(vec3(1));
-    dl.setConstantValue(1);
-    dl.setLinearValue(0.09);
-    dl.setQuadraticValue(0.032);
-    dl.setSmooth(true);
-
-    dl.drawLight(shader);
-    scene.drawScene();
+    /* scene.drawScene(); */
+    backPack.draw(shader);
 }
 
 void Game::clear()

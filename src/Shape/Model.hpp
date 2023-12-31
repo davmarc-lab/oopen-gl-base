@@ -11,10 +11,15 @@
 
 #include <vector>
 
+enum Flip {
+    VERTICALLY,
+    KEEP
+};
+
 class Model
 {
     private:
-        vector<Texture> textures_loaded;
+        vector<InfoTexture> textures_loaded;
         vector<Mesh> meshes;
         string directory;
         bool gammaCorrection;
@@ -25,13 +30,19 @@ class Model
        
         Mesh processMesh(aiMesh *mesh, const aiScene *scene);
         
-        vector<Texture> loadMaterialTextures(aiMaterial *mat, aiTextureType type, string typeName);
+        vector<InfoTexture> loadMaterialTextures(aiMaterial *mat, aiTextureType type, string typeName);
 
     public:
-        Model(const char* path, bool gamma = false) : gammaCorrection(gamma)
+        Model(const char* path, Flip flip = Flip::KEEP, bool gamma = false) : gammaCorrection(gamma)
         {
-            loadModel(path);
+            if (flip == Flip::VERTICALLY)
+            {
+                stbi_set_flip_vertically_on_load(true);
+            }
+            this->loadModel(path);
         }
+        
+        Model() {}
 
         void draw(Shader shader);
 };

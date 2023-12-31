@@ -29,6 +29,10 @@ scene = ./Scene/Scene.cpp
 sceneh = ./Scene/Scene.hpp
 shader = ./Shader/Shader.cpp
 shaderh = ./Shader/Shader.hpp
+mesh = ./Shape/Mesh.cpp
+meshh = ./Shape/Mesh.hpp
+model = ./Shape/Model.cpp
+modelh = ./Shape/Model.hpp
 libh = Lib.hpp
 imageh = ./include/texture/stb_image.hpp
 util = ./Utils/utils.cpp
@@ -45,8 +49,8 @@ opengl.o: main.cpp ${imageh} ${libh}
 	gcc -c ${FLAGS} main.cpp -o opengl.o
 ###---END---###
 
-main.exe: main.o window.o camera.o shader.o scene.o game.o material.o dl.o pl.o sl.o transf.o texture.o cube.o glad.o
-	g++ ${FLAGS} -o main.exe main.o window.o camera.o material.o dl.o pl.o sl.o transf.o texture.o cube.o game.o glad.o shader.o scene.o ${LIBS}
+main.exe: main.o window.o camera.o shader.o scene.o game.o material.o dl.o pl.o sl.o transf.o texture.o cube.o mesh.o model.o glad.o
+	g++ ${FLAGS} -o main.exe main.o window.o camera.o material.o dl.o pl.o sl.o transf.o texture.o cube.o game.o glad.o shader.o mesh.o model.o scene.o ${LIBS}
 
 main.o: main.cpp ${gladh} ${libh} ${intsh} ${gameh}
 	gcc -c ${FLAGS} main.cpp -o main.o
@@ -77,6 +81,12 @@ transf.o: ${transf} ${transfh} ${libh}
 
 texture.o: ${texture} ${textureh} ${libh} ${imageh}
 	gcc -c ${FLAGS} ${texture} -o texture.o
+
+mesh.o: ${mesh} ${meshh} ${libh} ${shaderh}
+	gcc -c ${FLAGS} ${mesh} -o mesh.o
+
+model.o: ${model} ${modelh} ${libh} ${meshh}
+	gcc -c ${FLAGS} ${model} -o model.o
 
 game.o: ${game} ${gameh}
 	gcc -c ${FLAGS} ${game} -o game.o

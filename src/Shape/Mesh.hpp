@@ -5,15 +5,19 @@
 
 #include <vector>
 
-struct Vertex {
+#define MAX_BONE_INFLUENCE 4
+
+struct InfoVertex {
     vec3 position;
     vec3 normal;
     vec2 texCoords;
     vec3 tangent;
     vec3 biTangent;
+    int m_BoneIDs[MAX_BONE_INFLUENCE];
+    float m_Weights[MAX_BONE_INFLUENCE];
 };
 
-struct Texture {
+struct InfoTexture {
     GLuint id;
     string type;
     string path;
@@ -25,15 +29,15 @@ class Mesh
         GLuint vao;
         GLuint vbo;
         GLuint ebo;
-        vector<Vertex> vertex;
+        vector<InfoVertex> vertex;
         vector<unsigned int> index;
-        vector<Texture> texture;
+        vector<InfoTexture> texture;
 
         void createVertexArray();
     public:
         Mesh() {}
 
-        Mesh(vector<Vertex> vertex, vector<unsigned int> index, vector<Texture> texture);
+        Mesh(vector<InfoVertex> vertex, vector<unsigned int> index, vector<InfoTexture> texture);
 
         void draw(Shader shader);
 };

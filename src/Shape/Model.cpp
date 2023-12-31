@@ -14,7 +14,7 @@ void Model::draw(Shader shader)
 void Model::loadModel(string path)
 {
     Assimp::Importer import;
-    const aiScene *scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
+    const aiScene *scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
 
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
     {
@@ -45,13 +45,13 @@ void Model::processNode(aiNode *node, const aiScene *scene)
 
 Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
 {
-    vector<Vertex> vertices;
+    vector<InfoVertex> vertices;
     vector<unsigned int> indices;
-    vector<Texture> textures;
+    vector<InfoTexture> textures;
 
     for (int i = 0; i < mesh->mNumVertices; i++)
     {
-        Vertex vertex;
+        InfoVertex vertex;
         // vertex position
         vec3 vec = vec3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
         vertex.position = vec;
@@ -99,24 +99,24 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
     // process materials
     aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
 
-    vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
+    vector<InfoTexture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
     textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
 
-    vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
+    vector<InfoTexture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
     textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
 
-    vector<Texture> normalMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
+    vector<InfoTexture> normalMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
     textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
 
-    vector<Texture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
+    vector<InfoTexture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
     textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 
     return Mesh(vertices, indices, textures);
 }
 
-vector<Texture> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType type, string typeName)
+vector<InfoTexture> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType type, string typeName)
 {
-    vector<Texture> textures;
+    vector<InfoTexture> textures;
 
     for (int i = 0; i < mat->GetTextureCount(type); i++)
     {
@@ -136,7 +136,7 @@ vector<Texture> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType type,
         
         if (!skip)
         {
-            Texture texture;
+            InfoTexture texture;
             texture.id = TextureFromFile(str.C_Str(), this->directory);
             texture.type = typeName;
             texture.path = str.C_Str();
