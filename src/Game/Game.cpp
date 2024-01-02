@@ -65,7 +65,7 @@ void mouseMovementCallback(GLFWwindow *window, double xposIn, double yposIn)
 
 void Game::init(Window* window)
 {
-    projection = glm::perspective(glm::radians(45.0f), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
+    projection = glm::perspective(glm::radians(45.0f), (float)WIDTH / (float)HEIGHT, 0.1f, 500.0f);
     scene = Scene(projection);
 
     shader = Shader("./resources/modelVertexShader.glsl", "./resources/modelFragmentShader.glsl");
@@ -80,7 +80,11 @@ void Game::init(Window* window)
     backPack = Model("./resources/models/Try/First.obj", Flip::VERTICALLY);
 
     cube->createVertexArray();
-    cube->transformMesh(vec3(0), vec3(0.3f), vec3(1), 0);
+    cube->transformMesh(vec3(0), vec3(1), vec3(1), 0);
+    texture = Texture("resources/textures/dirt.jpg", cube->getTextureCoords());
+    texture.createTexture(GL_REPEAT, true);
+    cube->attachTexture(texture);
+    cubeShader.setInt("ourTexture", texture.getId());
 
     camera.moveCamera(vec3(0, 0, 4));
 
@@ -146,7 +150,9 @@ void Game::update(float deltaTime)
 
 void Game::render()
 {
+    glBindTexture(GL_TEXTURE_2D, texture.getId());
     scene.drawScene();
+    glActiveTexture(GL_TEXTURE0);
     backPack.draw(shader);
 }
 

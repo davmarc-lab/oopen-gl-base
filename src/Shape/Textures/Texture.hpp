@@ -19,9 +19,9 @@ class Texture
 
         Texture(const char *path, vector<vec2> texCoord);
 
-        void createTexture();
+        void createTexture(bool pixelated);
 
-        void createTexture(GLuint mode);
+        void createTexture(GLuint mode, bool pixelated);
 
         void setTextureMode(GLint mode) { this->textureMode = mode; }
 

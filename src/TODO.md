@@ -4,7 +4,7 @@ List of things to do in the opengl-three-dimension base:
 
 - [x] Quaternions (TODO implement quaternion operation)
 - [x] Camera 
-- [ ] Textures (texture with imported mesh is broken...idk why)
+- [x] Textures (fixed??)
 - [x] Lights (**multiple lights!**)
 - [x] Materials
 - [ ] Physics ?

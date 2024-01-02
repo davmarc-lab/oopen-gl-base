@@ -13,12 +13,12 @@ Texture::Texture(const char *path, vector<vec2> texCoord)
     this->data = stbi_load(path, &this->width, &this->height, &this->channelsNumber, 0);   
 }
 
-void Texture::createTexture()
+void Texture::createTexture(bool pixelated)
 {
-    this->createTexture(DEFAULT_MODE);
+    this->createTexture(DEFAULT_MODE, pixelated);
 }
 
-void Texture::createTexture(GLuint mode)
+void Texture::createTexture(GLuint mode, bool pixelated)
 {
     if (this->data != NULL)
     {
@@ -31,7 +31,7 @@ void Texture::createTexture(GLuint mode)
             format = GL_RGBA;
         this->textureMode = mode;
         glGenTextures(1, &this->id);
-        glBindTexture(GL_TEXTURE_1D, this->id);
+        glBindTexture(GL_TEXTURE_2D, this->id);
 
         glTexImage2D(GL_TEXTURE_2D,
                 0,
@@ -45,10 +45,10 @@ void Texture::createTexture(GLuint mode)
         glGenerateMipmap(GL_TEXTURE_2D);
 
         // textures parameters
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, this->textureMode);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, this->textureMode);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, pixelated ? GL_NEAREST : GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, pixelated ? GL_NEAREST : GL_LINEAR);
     }
     else
     {
