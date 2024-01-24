@@ -23,6 +23,8 @@ transf = ./Shape/Model/Transform.cpp
 transfh = ./Shape/Model/Transform.hpp
 texture = ./Shape/Textures/Texture.cpp
 textureh = ./Shape/Textures/Texture.hpp
+chunk = ./Chunk/Chunk.cpp
+chunkh = ./Chunk/Chunk.hpp
 cube = ./Shape/Cube.cpp
 cubeh = ./Shape/Cube.hpp
 scene = ./Scene/Scene.cpp
@@ -49,8 +51,8 @@ opengl.o: main.cpp ${imageh} ${libh}
 	gcc -c ${FLAGS} main.cpp -o opengl.o
 ###---END---###
 
-main.exe: main.o window.o camera.o shader.o scene.o game.o material.o dl.o pl.o sl.o transf.o texture.o cube.o mesh.o model.o glad.o
-	g++ ${FLAGS} -o main.exe main.o window.o camera.o material.o dl.o pl.o sl.o transf.o texture.o cube.o game.o glad.o shader.o mesh.o model.o scene.o ${LIBS}
+main.exe: main.o window.o camera.o shader.o scene.o game.o material.o dl.o pl.o sl.o chunk.o transf.o texture.o cube.o mesh.o model.o glad.o
+	g++ ${FLAGS} -o main.exe main.o window.o camera.o material.o dl.o pl.o sl.o chunk.o transf.o texture.o cube.o game.o glad.o shader.o mesh.o model.o scene.o ${LIBS}
 
 main.o: main.cpp ${gladh} ${libh} ${intsh} ${gameh}
 	gcc -c ${FLAGS} main.cpp -o main.o
@@ -69,6 +71,9 @@ pl.o: ${pl} ${plh} ${libh} ${lighth}
 
 sl.o: ${sl} ${slh} ${libh} ${lighth}
 	gcc -c ${FLAGS} ${sl} -o sl.o
+
+chunk.o: ${chunk} ${libh} ${intsh}
+	gcc -c ${FLAGS} ${chunk} -o chunk.o
 
 shape.o: ${shape} ${shapeh} ${libh} ${gladh} ${intsh} ${shaderh}
 	gcc -c ${FLAGS} ${shape} -o shape.o

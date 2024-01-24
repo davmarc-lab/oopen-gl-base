@@ -1,6 +1,5 @@
 #include "Cube.hpp"
 #include <glm/trigonometric.hpp>
-#include <string>
 
 void Cube::buildCube()
 {

@@ -16,6 +16,7 @@
 #include "../Scene/Scene.hpp"
 #include "../Shape/Model.hpp"
 #include "../Light/SpotLight.hpp"
+#include "../Chunk/Chunk.hpp"
 
 Game::Game(unsigned int width, unsigned int height)
 {
@@ -31,9 +32,8 @@ mat4 projection;
 Scene scene;
 Shape3D* cube = new Cube(color::BLUE);
 Camera camera = Camera();
-Shader shader, cubeShader;
+Shader cubeShader;
 Texture texture;
-Model backPack;
 
 struct Mouse
 {
@@ -65,28 +65,21 @@ void mouseMovementCallback(GLFWwindow *window, double xposIn, double yposIn)
 
 void Game::init(Window* window)
 {
-    projection = glm::perspective(glm::radians(45.0f), (float)WIDTH / (float)HEIGHT, 0.1f, 500.0f);
+    projection = glm::perspective(glm::radians(45.0f), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
     scene = Scene(projection);
-
-    shader = Shader("./resources/modelVertexShader.glsl", "./resources/modelFragmentShader.glsl");
-    shader.use();
-    shader.setMat4("projection", projection);
 
     cubeShader = Shader("./resources/vertexShader.glsl", "./resources/fragmentShader.glsl");
     cubeShader.use();
     cubeShader.setMat4("projection", projection);
 
-    // Model load test
-    backPack = Model("./resources/models/Try/First.obj", Flip::VERTICALLY);
-
     cube->createVertexArray();
-    cube->transformMesh(vec3(0), vec3(1), vec3(1), 0);
+    cube->transformMesh(vec3(0), vec3(0.01f), vec3(1), 0);
     texture = Texture("resources/textures/dirt.jpg", cube->getTextureCoords());
-    texture.createTexture(GL_REPEAT, true);
+    texture.createTexture();
     cube->attachTexture(texture);
     cubeShader.setInt("ourTexture", texture.getId());
 
-    camera.moveCamera(vec3(0, 0, 4));
+    camera.moveCamera(vec3(0, 0, 2));
 
     scene.addShape2dToScene(cube, cubeShader);
 
@@ -97,14 +90,15 @@ void Game::init(Window* window)
     if (glfwRawMouseMotionSupported())
         glfwSetInputMode(window->getWindow(), GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
 
+    Chunk chunk = Chunk(8);
+
     this->state = GAME_ACTIVE;
 }
 
 void Game::processInput(float deltaTime, Window window)
 {
     // camera input
-    // IMPORTANT< CHANGE THIS UGLY METHOD
-    float cameraVelocity = 4 * deltaTime;
+    float cameraVelocity = camera.getCameraVelocity() * deltaTime;
     if (glfwGetKey(window.getWindow(), GLFW_KEY_W) == GLFW_PRESS)
     {
         auto pos = camera.getCameraPosition() + cameraVelocity * camera.getCameraFront();
@@ -142,18 +136,15 @@ static float rotval = 0;
 void Game::update(float deltaTime)
 {
     cubeShader.setMat4("view", camera.getViewMatrix());
-    shader.setMat4("view", camera.getViewMatrix());
-    shader.setMat4("model", translate(mat4(1.0f), vec3(0)));
-
-    cube->transformMesh(vec3(0), vec3(1), vec3(0, 1, 0), 30 * deltaTime);
 }
 
 void Game::render()
 {
+    Chunk chunk = Chunk(8);
+    chunk.drawChunk(cubeShader);
     glBindTexture(GL_TEXTURE_2D, texture.getId());
+    glActiveTexture(GL_TEXTURE1);
     scene.drawScene();
-    glActiveTexture(GL_TEXTURE0);
-    backPack.draw(shader);
 }
 
 void Game::clear()

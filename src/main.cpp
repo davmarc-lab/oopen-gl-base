@@ -12,7 +12,6 @@ const int WIDTH = 1812, HEIGHT = 1017;
 
 int main()
 {
-
     Game game = Game(WIDTH, HEIGHT);
     Window window = Window(GAME_NAME, WIDTH, HEIGHT);
 
@@ -40,8 +39,7 @@ int main()
 
         // render
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // also clear the depth buffer now!
-  
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         game.render();
 
         // swap buffers and poll IO events

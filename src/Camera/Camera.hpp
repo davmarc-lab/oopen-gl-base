@@ -4,9 +4,9 @@
 
 const float YAW = -90.0f;
 const float PITCH = 0.0f;
-const float SPEED = 2.5f;
+const float SPEED = 1.0f;
 const float SENSITIVITY = 0.1f;
-const float ZOOM = 0.0f;
+const float ZOOM = 45.0f;
 
 class Camera
 {
@@ -51,6 +51,10 @@ class Camera
         vec3 getCameraFront() { return this->cameraFront; }
 
         vec3 getCameraUp() { return this->cameraUp; }
+
+        void setCameraVelocity(const float velocity) { this->cameraSpeed = velocity; }
+
+        float getCameraVelocity() { return this->cameraSpeed; }
 
         vec3 getCameraRight() { return this->cameraRight; }
 
