@@ -1,6 +1,4 @@
 #include "Transform.hpp"
-#include <glm/ext/quaternion_trigonometric.hpp>
-#include <glm/gtx/quaternion.hpp>
 
 void Transform::applyTransofrmation(vec3 translateVector,
         vec3 scaleVector,

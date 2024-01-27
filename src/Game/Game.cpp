@@ -65,7 +65,7 @@ void mouseMovementCallback(GLFWwindow *window, double xposIn, double yposIn)
 
 void Game::init(Window* window)
 {
-    projection = glm::perspective(glm::radians(45.0f), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
+    projection = glm::perspective(glm::radians(45.0f), (float)WIDTH / (float)HEIGHT, 0.01f, 100.0f);
     scene = Scene(projection);
 
     cubeShader = Shader("./resources/vertexShader.glsl", "./resources/fragmentShader.glsl");
@@ -74,14 +74,14 @@ void Game::init(Window* window)
 
     cube->createVertexArray();
     cube->transformMesh(vec3(0), vec3(0.01f), vec3(1), 0);
-    texture = Texture("resources/textures/dirt.jpg", cube->getTextureCoords());
+    texture = Texture("resources/textures/web-dirt.png", cube->getTextureCoords());
     texture.createTexture();
     cube->attachTexture(texture);
     cubeShader.setInt("ourTexture", texture.getId());
 
     camera.moveCamera(vec3(0, 0, 2));
 
-    scene.addShape2dToScene(cube, cubeShader);
+    /* scene.addShape2dToScene(cube, cubeShader); */
 
     // sets the mouse callback function
     glfwSetInputMode(window->getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);

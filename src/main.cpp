@@ -10,8 +10,7 @@
 
 const int WIDTH = 1812, HEIGHT = 1017;
 
-int main()
-{
+int main() {
     Game game = Game(WIDTH, HEIGHT);
     Window window = Window(GAME_NAME, WIDTH, HEIGHT);
 
@@ -23,8 +22,7 @@ int main()
     float lastFrame = 0.0f;
 
     // Start of window loop
-    while (!glfwWindowShouldClose(window.getWindow()))
-    {
+    while (!glfwWindowShouldClose(window.getWindow())) {
         // manage frames time
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
